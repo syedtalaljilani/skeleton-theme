@@ -7,8 +7,10 @@
     height: var(--header-height);
     background: rgba(255, 255, 255, 0.98);
     backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     z-index: 100;
-    transition: transform var(--transition-duration) var(--transition-timing);
+    transition: all var(--transition-duration) var(--transition-timing);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
   }
 
   .header--hidden {
@@ -17,10 +19,12 @@
 
   .header__container {
     height: 100%;
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
     align-items: center;
-    justify-content: space-between;
     padding: 0 var(--container-padding);
+    max-width: var(--container-max-width);
+    margin: 0 auto;
   }
 
   .header__logo {
@@ -28,29 +32,55 @@
     font-weight: 700;
     text-decoration: none;
     color: var(--color-text);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    justify-self: start;
+  }
+
+  .header__logo-urdu {
+    font-family: var(--font-urdu);
+    font-size: 1.2em;
   }
 
   .header__nav {
     display: flex;
     align-items: center;
-    gap: var(--spacing-md);
+    gap: clamp(1.5rem, 3vw, 2.5rem);
+    justify-self: center;
   }
 
   .header__nav-link {
     font-size: clamp(0.875rem, 2vw, 1rem);
     text-decoration: none;
     color: var(--color-text);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: 500;
     transition: color var(--transition-duration) var(--transition-timing);
+    position: relative;
   }
 
-  .header__nav-link:hover {
-    color: var(--color-text-light);
+  .header__nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background: currentColor;
+    transition: width var(--transition-duration) var(--transition-timing);
+  }
+
+  .header__nav-link:hover::after {
+    width: 100%;
   }
 
   .header__icons {
     display: flex;
     align-items: center;
-    gap: var(--spacing-sm);
+    gap: clamp(1rem, 2vw, 1.5rem);
+    justify-self: end;
   }
 
   .header__icon {
@@ -61,11 +91,12 @@
     height: clamp(2rem, 4vw, 2.5rem);
     color: var(--color-text);
     text-decoration: none;
-    transition: color var(--transition-duration) var(--transition-timing);
+    transition: all var(--transition-duration) var(--transition-timing);
+    position: relative;
   }
 
   .header__icon:hover {
-    color: var(--color-text-light);
+    transform: translateY(-1px);
   }
 
   .header__mobile-menu-button {
@@ -75,9 +106,55 @@
     padding: var(--spacing-xs);
     cursor: pointer;
     color: var(--color-text);
+    width: 24px;
+    height: 24px;
+    position: relative;
+  }
+
+  .header__mobile-menu-button span,
+  .header__mobile-menu-button span::before,
+  .header__mobile-menu-button span::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 1px;
+    background: currentColor;
+    transition: all var(--transition-duration) var(--transition-timing);
+  }
+
+  .header__mobile-menu-button span {
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  .header__mobile-menu-button span::before {
+    top: -6px;
+  }
+
+  .header__mobile-menu-button span::after {
+    bottom: -6px;
+  }
+
+  .header__mobile-menu-button[aria-expanded="true"] span {
+    background: transparent;
+  }
+
+  .header__mobile-menu-button[aria-expanded="true"] span::before {
+    transform: rotate(45deg);
+    top: 0;
+  }
+
+  .header__mobile-menu-button[aria-expanded="true"] span::after {
+    transform: rotate(-45deg);
+    bottom: 0;
   }
 
   @media screen and (max-width: 768px) {
+    .header__container {
+      grid-template-columns: auto 1fr auto;
+      gap: 1rem;
+    }
+
     .header__nav {
       position: fixed;
       top: var(--header-height);
@@ -86,9 +163,10 @@
       height: calc(100vh - var(--header-height));
       background: var(--color-background);
       flex-direction: column;
-      padding: var(--spacing-lg);
+      padding: var(--spacing-xl);
       transform: translateX(-100%);
       transition: transform var(--transition-duration) var(--transition-timing);
+      justify-content: center;
     }
 
     .header__nav.is-active {
@@ -100,21 +178,25 @@
     }
 
     .header__nav-link {
-      font-size: 1.25rem;
+      font-size: 1.5rem;
+      padding: 0.5rem 0;
+    }
+
+    .header__nav-link::after {
+      bottom: 0;
     }
   }
 {%- endstyle -%}
 
 <header class="header" data-header>
   <div class="header__container">
-    <a href="/" class="header__logo">FAESLE</a>
+    <a href="/" class="header__logo">
+      <span class="header__logo-urdu">فیصلہ</span>
+      <span>FAESLE</span>
+    </a>
 
-    <button class="header__mobile-menu-button" aria-label="Toggle menu" data-mobile-menu-button>
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <line x1="3" y1="12" x2="21" y2="12"></line>
-        <line x1="3" y1="6" x2="21" y2="6"></line>
-        <line x1="3" y1="18" x2="21" y2="18"></line>
-      </svg>
+    <button class="header__mobile-menu-button" aria-label="Toggle menu" data-mobile-menu-button aria-expanded="false">
+      <span></span>
     </button>
 
     <nav class="header__nav" data-nav>
