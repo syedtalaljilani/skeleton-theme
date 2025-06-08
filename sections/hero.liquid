@@ -54,9 +54,10 @@ html, body {
   padding: 0 !important;
   box-sizing: border-box;
 }
+
 .hero-section {
   position: relative;
-  height: 100vh;
+  min-height: 100vh;
   width: 100vw;
   left: 50%;
   right: 50%;
@@ -68,7 +69,9 @@ html, body {
   justify-content: center;
   color: #ffffff;
   box-sizing: border-box;
+  padding: 2rem 1rem;
 }
+
 .gradient-bg {
   position: absolute;
   top: 0;
@@ -80,56 +83,108 @@ html, body {
   animation: gradient 15s ease infinite;
   z-index: -1;
 }
+
 @keyframes gradient {
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
   100% { background-position: 0% 50%; }
 }
+
 .hero-content {
   text-align: center;
   z-index: 1;
+  max-width: 1200px;
+  width: 100%;
+  padding: 0 1rem;
 }
+
 .hero-heading {
-  font-size: 8rem;
+  font-size: clamp(3rem, 10vw, 8rem);
   font-weight: 900;
   margin: 0;
-  line-height: 1;
+  line-height: 1.1;
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 0.5rem;
 }
+
 .english-text {
   font-family: var(--font-english);
   letter-spacing: 0.2em;
+  font-size: clamp(2rem, 8vw, 6rem);
 }
+
 .urdu-text {
   font-family: var(--font-urdu);
-  font-size: 6rem;
-  margin-top: 1rem;
+  font-size: clamp(2.5rem, 9vw, 7rem);
+  margin-top: 0.5rem;
+  line-height: 1.2;
 }
+
 .hero-subheading {
-  font-size: 1.5rem;
-  margin: 2rem 0;
+  font-size: clamp(1rem, 3vw, 1.5rem);
+  margin: clamp(1rem, 3vw, 2rem) 0;
   letter-spacing: 0.1em;
   text-transform: uppercase;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
 }
+
 .cta-button {
   display: inline-block;
-  padding: 1rem 3rem;
+  padding: clamp(0.75rem, 2vw, 1rem) clamp(2rem, 4vw, 3rem);
   border: 2px solid #ffffff;
   color: #ffffff;
   text-decoration: none;
-  font-size: 1.2rem;
+  font-size: clamp(0.875rem, 2vw, 1.2rem);
   letter-spacing: 0.1em;
   transition: all 0.3s ease;
+  margin-top: clamp(1rem, 3vw, 2rem);
 }
+
 .cta-button:hover {
   background: #ffffff;
   color: #000000;
 }
-@media screen and (max-width: 768px) {
-  .hero-heading { font-size: 4rem; }
-  .urdu-text { font-size: 3rem; }
-  .hero-subheading { font-size: 1.2rem; }
+
+/* Tablet */
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+  .hero-section {
+    padding: 3rem 2rem;
+  }
+  
+  .hero-content {
+    padding: 0 2rem;
+  }
+}
+
+/* Mobile */
+@media screen and (max-width: 767px) {
+  .hero-section {
+    padding: 1rem;
+  }
+  
+  .hero-content {
+    padding: 0 1rem;
+  }
+  
+  .hero-heading {
+    gap: 0.25rem;
+  }
+  
+  .urdu-text {
+    margin-top: 0.25rem;
+  }
+  
+  .hero-subheading {
+    margin: 1rem auto;
+  }
+  
+  .cta-button {
+    width: 100%;
+    max-width: 300px;
+  }
 }
 </style> 
