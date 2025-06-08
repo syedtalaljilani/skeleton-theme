@@ -30,26 +30,88 @@ const handleScroll = throttle(() => {
   const currentScroll = window.pageYOffset;
 
   if (currentScroll <= 0) {
-    header?.classList.remove("header--hidden");
+    header.classList.remove("header--hidden");
     return;
   }
 
   if (
     currentScroll > lastScroll &&
-    !header?.classList.contains("header--hidden")
+    !header.classList.contains("header--hidden")
   ) {
-    header?.classList.add("header--hidden");
+    // Scrolling down
+    header.classList.add("header--hidden");
   } else if (
     currentScroll < lastScroll &&
-    header?.classList.contains("header--hidden")
+    header.classList.contains("header--hidden")
   ) {
-    header?.classList.remove("header--hidden");
+    // Scrolling up
+    header.classList.remove("header--hidden");
   }
 
   lastScroll = currentScroll;
 }, 100);
 
 window.addEventListener("scroll", handleScroll);
+
+// Mobile menu
+const mobileMenuButton = document.querySelector("[data-mobile-menu-button]");
+const nav = document.querySelector("[data-nav]");
+
+if (mobileMenuButton && nav) {
+  mobileMenuButton.addEventListener("click", () => {
+    nav.classList.toggle("is-active");
+    mobileMenuButton.setAttribute(
+      "aria-expanded",
+      mobileMenuButton.getAttribute("aria-expanded") === "true"
+        ? "false"
+        : "true"
+    );
+  });
+
+  // Close mobile menu when clicking outside
+  document.addEventListener("click", (event) => {
+    if (
+      !nav.contains(event.target) &&
+      !mobileMenuButton.contains(event.target)
+    ) {
+      nav.classList.remove("is-active");
+      mobileMenuButton.setAttribute("aria-expanded", "false");
+    }
+  });
+
+  // Close mobile menu when clicking a link
+  nav.querySelectorAll("a").forEach((link) => {
+    link.addEventListener("click", () => {
+      nav.classList.remove("is-active");
+      mobileMenuButton.setAttribute("aria-expanded", "false");
+    });
+  });
+}
+
+// Search modal
+const searchButton = document.querySelector("[data-search-button]");
+const searchModal = document.querySelector("[data-search-modal]");
+const searchClose = document.querySelector("[data-search-close]");
+
+if (searchButton && searchModal && searchClose) {
+  searchButton.addEventListener("click", () => {
+    searchModal.classList.add("is-active");
+    document.body.style.overflow = "hidden";
+  });
+
+  searchClose.addEventListener("click", () => {
+    searchModal.classList.remove("is-active");
+    document.body.style.overflow = "";
+  });
+
+  // Close search modal when clicking outside
+  searchModal.addEventListener("click", (event) => {
+    if (event.target === searchModal) {
+      searchModal.classList.remove("is-active");
+      document.body.style.overflow = "";
+    }
+  });
+}
 
 // Lazy loading images
 const lazyLoadImages = () => {
@@ -61,7 +123,8 @@ const lazyLoadImages = () => {
         if (entry.isIntersecting) {
           const image = entry.target;
           image.src = image.dataset.src;
-          imageObserver.unobserve(image);
+          image.classList.add("loaded");
+          observer.unobserve(image);
         }
       });
     });
@@ -71,6 +134,7 @@ const lazyLoadImages = () => {
     // Fallback for browsers that don't support IntersectionObserver
     images.forEach((image) => {
       image.src = image.dataset.src;
+      image.classList.add("loaded");
     });
   }
 };
@@ -78,101 +142,46 @@ const lazyLoadImages = () => {
 // Initialize lazy loading
 document.addEventListener("DOMContentLoaded", lazyLoadImages);
 
-// Handle mobile menu
-const mobileMenuToggle = document.querySelector("[data-mobile-menu-toggle]");
-const mobileMenu = document.querySelector("[data-mobile-menu]");
-
-mobileMenuToggle?.addEventListener("click", () => {
-  mobileMenu?.classList.toggle("mobile-menu--open");
-  document.body.style.overflow = mobileMenu?.classList.contains(
-    "mobile-menu--open"
-  )
-    ? "hidden"
-    : "";
-});
-
-// Handle search modal
-const searchToggle = document.querySelector("[data-search-toggle]");
-const searchModal = document.querySelector("[data-search-modal]");
-const searchClose = document.querySelector("[data-search-close]");
-
-searchToggle?.addEventListener("click", () => {
-  searchModal?.classList.add("search-modal--open");
-  document.body.style.overflow = "hidden";
-  searchModal?.querySelector("input")?.focus();
-});
-
-searchClose?.addEventListener("click", () => {
-  searchModal?.classList.remove("search-modal--open");
-  document.body.style.overflow = "";
-});
-
-// Handle cart drawer
-const cartToggle = document.querySelector("[data-cart-toggle]");
-const cartDrawer = document.querySelector("[data-cart-drawer]");
-const cartClose = document.querySelector("[data-cart-close]");
-
-cartToggle?.addEventListener("click", () => {
-  cartDrawer?.classList.add("cart-drawer--open");
-  document.body.style.overflow = "hidden";
-});
-
-cartClose?.addEventListener("click", () => {
-  cartDrawer?.classList.remove("cart-drawer--open");
-  document.body.style.overflow = "";
-});
-
-// Handle quantity inputs
-const quantityInputs = document.querySelectorAll("[data-quantity-input]");
-
-quantityInputs.forEach((input) => {
-  const minus = input.querySelector("[data-quantity-minus]");
-  const plus = input.querySelector("[data-quantity-plus]");
-  const value = input.querySelector("[data-quantity-value]");
-
-  minus?.addEventListener("click", () => {
-    const currentValue = parseInt(value?.textContent || "0");
-    if (currentValue > 1) {
-      value.textContent = currentValue - 1;
-    }
-  });
-
-  plus?.addEventListener("click", () => {
-    const currentValue = parseInt(value?.textContent || "0");
-    value.textContent = currentValue + 1;
-  });
-});
-
-// Handle form submissions
+// Form handling
 const forms = document.querySelectorAll("form[data-ajax]");
 
 forms.forEach((form) => {
   form.addEventListener("submit", async (event) => {
     event.preventDefault();
 
-    const formData = new FormData(form);
     const submitButton = form.querySelector('[type="submit"]');
+    const originalText = submitButton.textContent;
 
     try {
-      submitButton?.classList.add("loading");
+      submitButton.disabled = true;
+      submitButton.textContent = "Loading...";
 
+      const formData = new FormData(form);
       const response = await fetch(form.action, {
         method: form.method,
         body: formData,
+        headers: {
+          Accept: "application/json",
+        },
       });
 
-      if (response.ok) {
-        const data = await response.json();
-        // Handle success
-        console.log("Form submitted successfully:", data);
+      if (!response.ok) throw new Error("Network response was not ok");
+
+      const data = await response.json();
+
+      if (data.success) {
+        form.reset();
+        // Handle success (e.g., show success message)
       } else {
-        throw new Error("Form submission failed");
+        // Handle error
+        throw new Error(data.message || "Something went wrong");
       }
     } catch (error) {
-      console.error("Error submitting form:", error);
-      // Handle error
+      console.error("Error:", error);
+      // Handle error (e.g., show error message)
     } finally {
-      submitButton?.classList.remove("loading");
+      submitButton.disabled = false;
+      submitButton.textContent = originalText;
     }
   });
 });

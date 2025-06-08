@@ -3,138 +3,134 @@
     position: fixed;
     top: 0;
     left: 0;
-    right: 0;
-    z-index: 100;
-    background: rgba(255, 255, 255, 0.95);
+    width: 100%;
+    height: var(--header-height);
+    background: rgba(255, 255, 255, 0.98);
     backdrop-filter: blur(10px);
-    transition: transform 0.3s ease;
+    z-index: 100;
+    transition: transform var(--transition-duration) var(--transition-timing);
   }
 
   .header--hidden {
     transform: translateY(-100%);
   }
 
-  .header__wrapper {
+  .header__container {
+    height: 100%;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 1rem 2rem;
-    max-width: 1400px;
-    margin: 0 auto;
+    padding: 0 var(--container-padding);
   }
 
   .header__logo {
-    font-size: 2rem;
+    font-size: clamp(1.25rem, 3vw, 1.5rem);
     font-weight: 700;
     text-decoration: none;
-    color: #000;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
-
-  .header__logo-urdu {
-    font-family: 'Noto Nastaliq Urdu', serif;
+    color: var(--color-text);
   }
 
   .header__nav {
     display: flex;
-    gap: 2rem;
+    align-items: center;
+    gap: var(--spacing-md);
   }
 
   .header__nav-link {
+    font-size: clamp(0.875rem, 2vw, 1rem);
     text-decoration: none;
-    color: #000;
-    font-weight: 500;
-    transition: opacity 0.2s ease;
+    color: var(--color-text);
+    transition: color var(--transition-duration) var(--transition-timing);
   }
 
   .header__nav-link:hover {
-    opacity: 0.7;
+    color: var(--color-text-light);
   }
 
   .header__icons {
     display: flex;
-    gap: 1.5rem;
+    align-items: center;
+    gap: var(--spacing-sm);
   }
 
   .header__icon {
-    background: none;
-    border: none;
-    padding: 0;
-    cursor: pointer;
-    color: #000;
-  }
-
-  .cart-drawer {
-    position: fixed;
-    top: 0;
-    right: -100%;
-    width: 100%;
-    max-width: 400px;
-    height: 100vh;
-    background: #fff;
-    box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
-    transition: right 0.3s ease;
-    z-index: 1000;
-  }
-
-  .cart-drawer--open {
-    right: 0;
-  }
-
-  .cart-drawer__header {
-    padding: 1.5rem;
-    border-bottom: 1px solid #eee;
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    justify-content: center;
+    width: clamp(2rem, 4vw, 2.5rem);
+    height: clamp(2rem, 4vw, 2.5rem);
+    color: var(--color-text);
+    text-decoration: none;
+    transition: color var(--transition-duration) var(--transition-timing);
   }
 
-  .cart-drawer__close {
+  .header__icon:hover {
+    color: var(--color-text-light);
+  }
+
+  .header__mobile-menu-button {
+    display: none;
     background: none;
     border: none;
+    padding: var(--spacing-xs);
     cursor: pointer;
+    color: var(--color-text);
   }
 
-  .cart-drawer__content {
-    padding: 1.5rem;
-    height: calc(100vh - 70px);
-    overflow-y: auto;
-  }
-
-  @media (max-width: 768px) {
+  @media screen and (max-width: 768px) {
     .header__nav {
-      display: none;
+      position: fixed;
+      top: var(--header-height);
+      left: 0;
+      width: 100%;
+      height: calc(100vh - var(--header-height));
+      background: var(--color-background);
+      flex-direction: column;
+      padding: var(--spacing-lg);
+      transform: translateX(-100%);
+      transition: transform var(--transition-duration) var(--transition-timing);
     }
-    
-    .cart-drawer {
-      max-width: 100%;
+
+    .header__nav.is-active {
+      transform: translateX(0);
+    }
+
+    .header__mobile-menu-button {
+      display: block;
+    }
+
+    .header__nav-link {
+      font-size: 1.25rem;
     }
   }
 {%- endstyle -%}
 
 <header class="header" data-header>
-  <div class="header__wrapper">
-    <a href="/" class="header__logo">
-      <span class="header__logo-urdu">فیصلہ</span>
-      <span>Faesle</span>
-    </a>
+  <div class="header__container">
+    <a href="/" class="header__logo">FAESLE</a>
 
-    <nav class="header__nav">
-      <a href="/collections/all" class="header__nav-link">Shop</a>
-      <a href="/pages/about" class="header__nav-link">About</a>
-      <a href="/pages/contact" class="header__nav-link">Contact</a>
+    <button class="header__mobile-menu-button" aria-label="Toggle menu" data-mobile-menu-button>
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="3" y1="12" x2="21" y2="12"></line>
+        <line x1="3" y1="6" x2="21" y2="6"></line>
+        <line x1="3" y1="18" x2="21" y2="18"></line>
+      </svg>
+    </button>
+
+    <nav class="header__nav" data-nav>
+      {%- for link in section.settings.menu.links -%}
+        <a href="{{ link.url }}" class="header__nav-link">{{ link.title }}</a>
+      {%- endfor -%}
     </nav>
 
     <div class="header__icons">
-      <button class="header__icon" data-search-toggle>
+      <button class="header__icon" aria-label="Search" data-search-button>
         {% render 'icon-search' %}
       </button>
-      <button class="header__icon" data-cart-toggle>
+      <a href="/cart" class="header__icon" aria-label="Cart">
         {% render 'icon-cart' %}
-        <span class="cart-count" data-cart-count>{{ cart.item_count }}</span>
-      </button>
+        <span class="visually-hidden">Cart</span>
+      </a>
     </div>
   </div>
 </header>
@@ -197,12 +193,13 @@
 
 {% schema %}
 {
-  "name": "t:general.header",
+  "name": "Header",
   "settings": [
     {
       "type": "link_list",
       "id": "menu",
-      "label": "t:labels.menu"
+      "label": "Menu",
+      "default": "main-menu"
     }
   ]
 }
