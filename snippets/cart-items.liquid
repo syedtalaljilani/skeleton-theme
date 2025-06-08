@@ -1,0 +1,193 @@
+{%- style -%}
+  .cart-items {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .cart-item {
+    display: grid;
+    grid-template-columns: 100px 1fr auto;
+    gap: 1rem;
+    padding: 1rem 0;
+    border-bottom: 1px solid #eee;
+  }
+
+  .cart-item__image {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+  }
+
+  .cart-item__details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .cart-item__title {
+    font-weight: 500;
+  }
+
+  .cart-item__price {
+    color: #666;
+  }
+
+  .cart-item__quantity {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .cart-item__quantity-button {
+    background: none;
+    border: 1px solid #ddd;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+
+  .cart-item__remove {
+    background: none;
+    border: none;
+    color: #999;
+    cursor: pointer;
+    padding: 0.5rem;
+  }
+
+  .cart-footer {
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid #eee;
+  }
+
+  .cart-subtotal {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+    font-weight: 500;
+  }
+
+  .cart-checkout {
+    width: 100%;
+    padding: 1rem;
+    background: #000;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    font-weight: 500;
+  }
+
+  .cart-empty {
+    text-align: center;
+    padding: 2rem 0;
+    color: #666;
+  }
+{%- endstyle -%}
+
+<div class="cart-items" data-cart-items>
+  {% if cart.item_count > 0 %}
+    {% for item in cart.items %}
+      <div class="cart-item" data-cart-item data-variant-id="{{ item.variant_id }}">
+        <img 
+          src="{{ item.image | img_url: '200x' }}" 
+          alt="{{ item.title }}"
+          class="cart-item__image"
+          loading="lazy"
+        >
+        
+        <div class="cart-item__details">
+          <h3 class="cart-item__title">{{ item.product.title }}</h3>
+          <p class="cart-item__price">{{ item.final_price | money }}</p>
+          
+          <div class="cart-item__quantity">
+            <button class="cart-item__quantity-button" data-quantity-minus>-</button>
+            <span data-quantity>{{ item.quantity }}</span>
+            <button class="cart-item__quantity-button" data-quantity-plus>+</button>
+          </div>
+        </div>
+
+        <button class="cart-item__remove" data-remove-item>
+          {% render 'icon-close' %}
+        </button>
+      </div>
+    {% endfor %}
+
+    <div class="cart-footer">
+      <div class="cart-subtotal">
+        <span>Subtotal</span>
+        <span>{{ cart.total_price | money }}</span>
+      </div>
+      
+      <button class="cart-checkout" onclick="window.location.href='/checkout'">
+        Checkout
+      </button>
+    </div>
+  {% else %}
+    <div class="cart-empty">
+      <p>Your cart is empty</p>
+    </div>
+  {% endif %}
+</div>
+
+<script>
+  class CartItems {
+    constructor() {
+      this.cartItems = document.querySelector('[data-cart-items]');
+      this.init();
+    }
+
+    init() {
+      this.cartItems?.addEventListener('click', this.handleClick.bind(this));
+    }
+
+    async handleClick(event) {
+      const target = event.target;
+      
+      if (target.matches('[data-quantity-minus]')) {
+        const item = target.closest('[data-cart-item]');
+        const quantity = item.querySelector('[data-quantity]');
+        const newQuantity = Math.max(0, parseInt(quantity.textContent) - 1);
+        await this.updateQuantity(item.dataset.variantId, newQuantity);
+      }
+      
+      if (target.matches('[data-quantity-plus]')) {
+        const item = target.closest('[data-cart-item]');
+        const quantity = item.querySelector('[data-quantity]');
+        const newQuantity = parseInt(quantity.textContent) + 1;
+        await this.updateQuantity(item.dataset.variantId, newQuantity);
+      }
+      
+      if (target.matches('[data-remove-item]')) {
+        const item = target.closest('[data-cart-item]');
+        await this.updateQuantity(item.dataset.variantId, 0);
+      }
+    }
+
+    async updateQuantity(variantId, quantity) {
+      try {
+        const response = await fetch('/cart/change.js', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            id: variantId,
+            quantity: quantity
+          })
+        });
+
+        if (response.ok) {
+          window.location.reload();
+        }
+      } catch (error) {
+        console.error('Error updating cart:', error);
+      }
+    }
+  }
+
+  new CartItems();
+</script> 

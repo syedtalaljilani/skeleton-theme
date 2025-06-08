@@ -1,0 +1,106 @@
+{%- style -%}
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(
+      45deg,
+      #f3f3f3,
+      #e6e6e6,
+      #d9d9d9,
+      #cccccc,
+      #bfbfbf
+    );
+    background-size: 400% 400%;
+    animation: gradient 15s ease infinite;
+  }
+
+  @keyframes gradient {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+
+  .hero__content {
+    text-align: center;
+    padding: 2rem;
+    max-width: 800px;
+    z-index: 1;
+  }
+
+  .hero__title {
+    font-size: 4rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .hero__title-urdu {
+    font-family: 'Noto Nastaliq Urdu', serif;
+    font-size: 5rem;
+  }
+
+  .hero__subtitle {
+    font-size: 1.5rem;
+    color: #666;
+    margin-bottom: 2rem;
+  }
+
+  .hero__cta {
+    display: inline-block;
+    padding: 1rem 2rem;
+    background: #000;
+    color: #fff;
+    text-decoration: none;
+    font-weight: 500;
+    transition: transform 0.2s ease;
+  }
+
+  .hero__cta:hover {
+    transform: translateY(-2px);
+  }
+
+  @media (max-width: 768px) {
+    .hero__title {
+      font-size: 3rem;
+    }
+
+    .hero__title-urdu {
+      font-size: 4rem;
+    }
+
+    .hero__subtitle {
+      font-size: 1.25rem;
+    }
+  }
+{%- endstyle -%}
+
+<div class="hero">
+  <div class="hero__content">
+    <h1 class="hero__title">
+      <span class="hero__title-urdu">فیصلہ</span>
+      <span>Faesle</span>
+    </h1>
+    <p class="hero__subtitle">Decisions in oversized streetwear</p>
+    <a href="/collections/all" class="hero__cta">Shop Collection</a>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Hero",
+  "settings": []
+}
+{% endschema %} 

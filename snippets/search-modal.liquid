@@ -1,0 +1,214 @@
+{%- style -%}
+  .search-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.98);
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+  }
+
+  .search-modal--open {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .search-modal__wrapper {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .search-modal__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+  }
+
+  .search-modal__close {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+  }
+
+  .search-modal__form {
+    position: relative;
+    margin-bottom: 2rem;
+  }
+
+  .search-modal__input {
+    width: 100%;
+    padding: 1rem;
+    font-size: 1.5rem;
+    border: none;
+    border-bottom: 2px solid #000;
+    background: none;
+    outline: none;
+  }
+
+  .search-modal__results {
+    flex: 1;
+    overflow-y: auto;
+  }
+
+  .search-modal__product {
+    display: grid;
+    grid-template-columns: 100px 1fr;
+    gap: 1rem;
+    padding: 1rem 0;
+    border-bottom: 1px solid #eee;
+  }
+
+  .search-modal__product-image {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+  }
+
+  .search-modal__product-details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .search-modal__product-title {
+    font-weight: 500;
+  }
+
+  .search-modal__product-price {
+    color: #666;
+  }
+
+  .search-modal__empty {
+    text-align: center;
+    padding: 2rem 0;
+    color: #666;
+  }
+
+  @media (max-width: 768px) {
+    .search-modal__wrapper {
+      padding: 1rem;
+    }
+
+    .search-modal__input {
+      font-size: 1.25rem;
+    }
+  }
+{%- endstyle -%}
+
+<div class="search-modal" data-search-modal>
+  <div class="search-modal__wrapper">
+    <div class="search-modal__header">
+      <h2>Search</h2>
+      <button class="search-modal__close" data-search-close>
+        {% render 'icon-close' %}
+      </button>
+    </div>
+
+    <form class="search-modal__form" action="/search" method="get">
+      <input 
+        type="text" 
+        name="q" 
+        class="search-modal__input" 
+        placeholder="Search products..."
+        data-search-input
+      >
+    </form>
+
+    <div class="search-modal__results" data-search-results>
+      <div class="search-modal__empty">
+        <p>Start typing to search</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  class SearchModal {
+    constructor() {
+      this.modal = document.querySelector('[data-search-modal]');
+      this.input = document.querySelector('[data-search-input]');
+      this.results = document.querySelector('[data-search-results]');
+      this.closeButton = document.querySelector('[data-search-close]');
+      this.searchToggle = document.querySelector('[data-search-toggle]');
+      
+      this.init();
+    }
+
+    init() {
+      this.searchToggle?.addEventListener('click', this.open.bind(this));
+      this.closeButton?.addEventListener('click', this.close.bind(this));
+      this.input?.addEventListener('input', this.handleSearch.bind(this));
+      
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') this.close();
+      });
+    }
+
+    open() {
+      this.modal.classList.add('search-modal--open');
+      document.body.style.overflow = 'hidden';
+      this.input?.focus();
+    }
+
+    close() {
+      this.modal.classList.remove('search-modal--open');
+      document.body.style.overflow = '';
+    }
+
+    async handleSearch(event) {
+      const query = event.target.value.trim();
+      
+      if (query.length < 2) {
+        this.results.innerHTML = `
+          <div class="search-modal__empty">
+            <p>Start typing to search</p>
+          </div>
+        `;
+        return;
+      }
+
+      try {
+        const response = await fetch(`/search/suggest.json?q=${encodeURIComponent(query)}&resources[type]=product&resources[limit]=5`);
+        const data = await response.json();
+        
+        if (data.resources.results.products.length === 0) {
+          this.results.innerHTML = `
+            <div class="search-modal__empty">
+              <p>No results found</p>
+            </div>
+          `;
+          return;
+        }
+
+        this.results.innerHTML = data.resources.results.products.map(product => `
+          <a href="${product.url}" class="search-modal__product">
+            <img 
+              src="${product.featured_image.url}" 
+              alt="${product.title}"
+              class="search-modal__product-image"
+              loading="lazy"
+            >
+            <div class="search-modal__product-details">
+              <h3 class="search-modal__product-title">${product.title}</h3>
+              <p class="search-modal__product-price">${product.price}</p>
+            </div>
+          </a>
+        `).join('');
+      } catch (error) {
+        console.error('Error searching products:', error);
+      }
+    }
+  }
+
+  new SearchModal();
+</script> 
