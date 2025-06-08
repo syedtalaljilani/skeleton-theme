@@ -1,10 +1,15 @@
 {%- style -%}
   .hero {
     min-height: 100vh;
+    width: 100vw;
+    position: relative;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
     display: flex;
     align-items: center;
     justify-content: center;
-    position: relative;
     overflow: hidden;
     background: linear-gradient(
       45deg,
@@ -33,56 +38,63 @@
   .hero__content {
     text-align: center;
     padding: 2rem;
-    max-width: 800px;
+    max-width: 1200px;
+    width: 100%;
     z-index: 1;
   }
 
   .hero__title {
-    font-size: 4rem;
+    font-size: clamp(3rem, 8vw, 6rem);
     font-weight: 700;
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 0.5rem;
+    line-height: 1.1;
   }
 
   .hero__title-urdu {
     font-family: 'Noto Nastaliq Urdu', serif;
-    font-size: 5rem;
+    font-size: clamp(4rem, 10vw, 8rem);
+    line-height: 1.2;
   }
 
   .hero__subtitle {
-    font-size: 1.5rem;
+    font-size: clamp(1.25rem, 3vw, 2rem);
     color: #666;
-    margin-bottom: 2rem;
+    margin-bottom: 3rem;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
   }
 
   .hero__cta {
     display: inline-block;
-    padding: 1rem 2rem;
+    padding: 1.25rem 3rem;
     background: #000;
     color: #fff;
     text-decoration: none;
     font-weight: 500;
-    transition: transform 0.2s ease;
+    font-size: 1.125rem;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
   }
 
   .hero__cta:hover {
     transform: translateY(-2px);
+    background: transparent;
+    border-color: #000;
+    color: #000;
   }
 
   @media (max-width: 768px) {
-    .hero__title {
-      font-size: 3rem;
+    .hero__content {
+      padding: 1rem;
     }
-
-    .hero__title-urdu {
-      font-size: 4rem;
-    }
-
+    
     .hero__subtitle {
-      font-size: 1.25rem;
+      margin-bottom: 2rem;
     }
   }
 {%- endstyle -%}
