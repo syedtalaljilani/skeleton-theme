@@ -7,6 +7,14 @@
   padding: 0;
 }
 
+body {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  min-height: 100svh;
+  overflow-x: hidden;
+}
+
 /* Base styles */
 :root {
   /* Typography */
