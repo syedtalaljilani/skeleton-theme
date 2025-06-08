@@ -1,118 +1,156 @@
-{%- style -%}
-  .hero {
-    min-height: 100vh;
-    width: 100vw;
-    position: relative;
-    left: 50%;
-    right: 50%;
-    margin-left: -50vw;
-    margin-right: -50vw;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-    background: linear-gradient(
-      45deg,
-      #f3f3f3,
-      #e6e6e6,
-      #d9d9d9,
-      #cccccc,
-      #bfbfbf
-    );
-    background-size: 400% 400%;
-    animation: gradient 15s ease infinite;
-  }
-
-  @keyframes gradient {
-    0% {
-      background-position: 0% 50%;
+{% schema %}
+{
+  "name": "Hero Section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "FAESLE"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "DECISIONS"
+    },
+    {
+      "type": "text",
+      "id": "urdu_text",
+      "label": "Urdu Text",
+      "default": "فیصلے"
+    },
+    {
+      "type": "text",
+      "id": "cta_text",
+      "label": "CTA Text",
+      "default": "SHOP NOW"
     }
-    50% {
-      background-position: 100% 50%;
+  ],
+  "presets": [
+    {
+      "name": "Hero Section",
+      "category": "Custom"
     }
-    100% {
-      background-position: 0% 50%;
-    }
-  }
+  ]
+}
+{% endschema %}
 
-  .hero__content {
-    text-align: center;
-    padding: 2rem;
-    max-width: 1200px;
-    width: 100%;
-    z-index: 1;
-  }
-
-  .hero__title {
-    font-size: clamp(3rem, 8vw, 6rem);
-    font-weight: 700;
-    margin-bottom: 1.5rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.5rem;
-    line-height: 1.1;
-  }
-
-  .hero__title-urdu {
-    font-family: 'Noto Nastaliq Urdu', serif;
-    font-size: clamp(4rem, 10vw, 8rem);
-    line-height: 1.2;
-  }
-
-  .hero__subtitle {
-    font-size: clamp(1.25rem, 3vw, 2rem);
-    color: #666;
-    margin-bottom: 3rem;
-    max-width: 600px;
-    margin-left: auto;
-    margin-right: auto;
-  }
-
-  .hero__cta {
-    display: inline-block;
-    padding: 1.25rem 3rem;
-    background: #000;
-    color: #fff;
-    text-decoration: none;
-    font-weight: 500;
-    font-size: 1.125rem;
-    transition: all 0.3s ease;
-    border: 2px solid transparent;
-  }
-
-  .hero__cta:hover {
-    transform: translateY(-2px);
-    background: transparent;
-    border-color: #000;
-    color: #000;
-  }
-
-  @media (max-width: 768px) {
-    .hero__content {
-      padding: 1rem;
-    }
-    
-    .hero__subtitle {
-      margin-bottom: 2rem;
-    }
-  }
-{%- endstyle -%}
-
-<div class="hero">
-  <div class="hero__content">
-    <h1 class="hero__title">
-      <span class="hero__title-urdu">فیصلہ</span>
-      <span>Faesle</span>
+<div class="hero-section">
+  <div class="gradient-bg"></div>
+  <div class="hero-content">
+    <h1 class="hero-heading">
+      <span class="english-text">{{ section.settings.heading }}</span>
+      <span class="urdu-text">{{ section.settings.urdu_text }}</span>
     </h1>
-    <p class="hero__subtitle">Decisions in oversized streetwear</p>
-    <a href="/collections/all" class="hero__cta">Shop Collection</a>
+    <p class="hero-subheading">{{ section.settings.subheading }}</p>
+    <a href="/collections/all" class="cta-button">{{ section.settings.cta_text }}</a>
   </div>
 </div>
 
-{% schema %}
-{
-  "name": "Hero",
-  "settings": []
+<style>
+.hero-section {
+  position: relative;
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
 }
-{% endschema %} 
+
+.gradient-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    45deg,
+    #000000,
+    #1a1a1a,
+    #333333,
+    #1a1a1a,
+    #000000
+  );
+  background-size: 400% 400%;
+  animation: gradient 15s ease infinite;
+  z-index: -1;
+}
+
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.hero-content {
+  text-align: center;
+  z-index: 1;
+}
+
+.hero-heading {
+  font-size: 8rem;
+  font-weight: 900;
+  margin: 0;
+  line-height: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.english-text {
+  font-family: var(--font-english);
+  letter-spacing: 0.2em;
+}
+
+.urdu-text {
+  font-family: var(--font-urdu);
+  font-size: 6rem;
+  margin-top: 1rem;
+}
+
+.hero-subheading {
+  font-size: 1.5rem;
+  margin: 2rem 0;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.cta-button {
+  display: inline-block;
+  padding: 1rem 3rem;
+  border: 2px solid #ffffff;
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 1.2rem;
+  letter-spacing: 0.1em;
+  transition: all 0.3s ease;
+}
+
+.cta-button:hover {
+  background: #ffffff;
+  color: #000000;
+}
+
+@media screen and (max-width: 768px) {
+  .hero-heading {
+    font-size: 4rem;
+  }
+  
+  .urdu-text {
+    font-size: 3rem;
+  }
+  
+  .hero-subheading {
+    font-size: 1.2rem;
+  }
+}
+</style> 
