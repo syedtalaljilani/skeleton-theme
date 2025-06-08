@@ -10,11 +10,7 @@
         "collection": "all",
         "products_to_show": 6
       }
-    },
-    "about": {
-      "type": "about",
-      "settings": {}
     }
   },
-  "order": ["hero", "featured_products", "about"]
+  "order": ["hero", "featured_products"]
 }
