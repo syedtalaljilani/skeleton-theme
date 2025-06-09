@@ -23,10 +23,14 @@
     "comment_form_title": "Add a comment"
   },
   "cart": {
+    "title": "Shopping Cart",
+    "empty": "Your cart is empty",
+    "continue_shopping": "Continue Shopping",
+    "subtotal": "Subtotal",
     "checkout": "Checkout",
-    "title": "Cart",
     "update": "Update",
-    "remove": "Remove"
+    "remove": "Remove",
+    "quantity": "Quantity"
   },
   "customers": {
     "login": {
