@@ -22,23 +22,7 @@ const throttle = (func, limit) => {
   };
 };
 
-// Header scroll behavior
-const header = document.querySelector("[data-header]");
-let lastScroll = 0;
 
-const handleScroll = throttle(() => {
-  const currentScroll = window.pageYOffset;
-
-  if (currentScroll <= 0) {
-    header.classList.remove("header--scrolled");
-    return;
-  }
-
-  // Add scrolled class when page is scrolled
-  header.classList.add("header--scrolled");
-}, 100);
-
-window.addEventListener("scroll", handleScroll);
 
 // Mobile menu
 const mobileMenuButton = document.querySelector("[data-mobile-menu-button]");
