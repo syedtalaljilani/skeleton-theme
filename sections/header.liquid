@@ -66,90 +66,136 @@
     color: #000;
   }
 
-  .cart-drawer {
+  /* Mobile Menu Styles */
+  .mobile-menu {
     position: fixed;
     top: 0;
-    right: -100%;
+    left: -100%;
     width: 100%;
-    max-width: 400px;
     height: 100vh;
     background: #fff;
-    box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
-    transition: right 0.3s ease;
     z-index: 1000;
+    transition: left 0.3s ease;
+    padding: 2rem;
   }
 
-  .cart-drawer--open {
-    right: 0;
+  .mobile-menu--open {
+    left: 0;
   }
 
-  .cart-drawer__header {
-    padding: 1.5rem;
-    border-bottom: 1px solid #eee;
+  .mobile-menu__header {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-bottom: 2rem;
   }
 
-  .cart-drawer__close {
+  .mobile-menu__close {
     background: none;
     border: none;
     cursor: pointer;
+    padding: 0.5rem;
   }
 
-  .cart-drawer__content {
-    padding: 1.5rem;
-    height: calc(100vh - 70px);
-    overflow-y: auto;
+  .mobile-menu__nav {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .mobile-menu__link {
+    text-decoration: none;
+    color: #000;
+    font-size: 1.25rem;
+    font-weight: 500;
+  }
+
+  .menu-toggle {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+  }
+
+  .menu-toggle span {
+    display: block;
+    width: 25px;
+    height: 2px;
+    background: #000;
+    margin: 5px 0;
+    transition: transform 0.3s ease;
+  }
+
+  .menu-toggle--active span:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 5px);
+  }
+
+  .menu-toggle--active span:nth-child(2) {
+    opacity: 0;
+  }
+
+  .menu-toggle--active span:nth-child(3) {
+    transform: rotate(-45deg) translate(7px, -7px);
+  }
+
+  @media (min-width: 769px) {
+    .menu-toggle {
+      display: none;
+    }
   }
 
   @media (max-width: 768px) {
     .header__nav {
       display: none;
     }
-    
-    .cart-drawer {
-      max-width: 100%;
-    }
   }
 {%- endstyle -%}
 
-<header class="site-header">
-  <div class="container">
-    <div class="header-content">
-      <div class="header-left">
-        <button class="menu-toggle" aria-label="Menu">
-          <span></span>
-          <span></span>
-          <span></span>
-        </button>
-      </div>
-      
-      <div class="header-center">
-        <a href="/" class="logo">
-          {{ shop.name }}
-        </a>
-      </div>
-      
-      <div class="header-right">
-        <a href="/cart" class="cart-link">
-          Cart ({{ cart.item_count }})
-        </a>
-      </div>
+<header class="header" data-header>
+  <div class="header__wrapper">
+    <button class="menu-toggle" data-menu-toggle aria-label="Menu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+
+    <a href="/" class="header__logo">
+      <span class="header__logo-urdu">فیصلہ</span>
+      <span>Faesle</span>
+    </a>
+
+    <nav class="header__nav">
+      <a href="/collections/all" class="header__nav-link">Shop</a>
+      <a href="/pages/about" class="header__nav-link">About</a>
+      <a href="/pages/contact" class="header__nav-link">Contact</a>
+    </nav>
+
+    <div class="header__icons">
+      <a href="/cart" class="header__icon" data-cart-toggle>
+        Cart ({{ cart.item_count }})
+      </a>
     </div>
   </div>
 </header>
 
-<div class="cart-drawer" data-cart-drawer>
-  <div class="cart-drawer__header">
-    <h2>Your Cart</h2>
-    <button class="cart-drawer__close" data-cart-close>
-      {% render 'icon-close' %}
+<div class="mobile-menu" data-mobile-menu>
+  <div class="mobile-menu__header">
+    <a href="/" class="header__logo">
+      <span class="header__logo-urdu">فیصلہ</span>
+      <span>Faesle</span>
+    </a>
+    <button class="mobile-menu__close" data-menu-close aria-label="Close menu">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="18" y1="6" x2="6" y2="18"></line>
+        <line x1="6" y1="6" x2="18" y2="18"></line>
+      </svg>
     </button>
   </div>
-  <div class="cart-drawer__content">
-    {% render 'cart-items' %}
-  </div>
+  <nav class="mobile-menu__nav">
+    <a href="/collections/all" class="mobile-menu__link">Shop</a>
+    <a href="/pages/about" class="mobile-menu__link">About</a>
+    <a href="/pages/contact" class="mobile-menu__link">Contact</a>
+  </nav>
 </div>
 
 <script>
@@ -157,17 +203,17 @@
     constructor() {
       this.header = document.querySelector('[data-header]');
       this.lastScroll = 0;
-      this.cartDrawer = document.querySelector('[data-cart-drawer]');
-      this.cartToggle = document.querySelector('[data-cart-toggle]');
-      this.cartClose = document.querySelector('[data-cart-close]');
+      this.menuToggle = document.querySelector('[data-menu-toggle]');
+      this.menuClose = document.querySelector('[data-menu-close]');
+      this.mobileMenu = document.querySelector('[data-mobile-menu]');
       
       this.init();
     }
 
     init() {
       window.addEventListener('scroll', this.handleScroll.bind(this));
-      this.cartToggle?.addEventListener('click', this.toggleCart.bind(this));
-      this.cartClose?.addEventListener('click', this.toggleCart.bind(this));
+      this.menuToggle?.addEventListener('click', this.toggleMenu.bind(this));
+      this.menuClose?.addEventListener('click', this.toggleMenu.bind(this));
     }
 
     handleScroll() {
@@ -187,9 +233,10 @@
       this.lastScroll = currentScroll;
     }
 
-    toggleCart() {
-      this.cartDrawer.classList.toggle('cart-drawer--open');
-      document.body.style.overflow = this.cartDrawer.classList.contains('cart-drawer--open') ? 'hidden' : '';
+    toggleMenu() {
+      this.mobileMenu.classList.toggle('mobile-menu--open');
+      this.menuToggle.classList.toggle('menu-toggle--active');
+      document.body.style.overflow = this.mobileMenu.classList.contains('mobile-menu--open') ? 'hidden' : '';
     }
   }
 
