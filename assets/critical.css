@@ -115,9 +115,9 @@ body {
 
 /* Base styles */
 :root {
-  --font-primary: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-    Oxygen, Ubuntu, Cantarell, sans-serif;
-  --font-secondary: "hidyatullah", serif;
+  --font-primary: "hidyatullah", serif;
+  --font-secondary: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
   --color-text: #000000;
   --color-background: #ffffff;
   --color-accent: #000000;
