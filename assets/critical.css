@@ -7,7 +7,6 @@
   padding: 0;
 }
 
-
 html:has(dialog[scroll-lock][open], details[scroll-lock][open]) {
   overflow: hidden;
 }
@@ -162,7 +161,6 @@ body {
 
 /* Layout */
 
-
 .container {
   width: 100%;
   max-width: var(--container-width);
@@ -172,9 +170,10 @@ body {
 
 /* Header */
 .header {
-  position: fixed;
+  position: sticky;
   top: 0;
   left: 0;
+
   width: 100%;
   height: var(--header-height);
   background-color: var(--color-background);
