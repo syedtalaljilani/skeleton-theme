@@ -114,27 +114,28 @@
   }
 {%- endstyle -%}
 
-<header class="header" data-header>
-  <div class="header__wrapper">
-    <a href="/" class="header__logo">
-      <span class="header__logo-urdu">فیصلہ</span>
-      <span>Faesle</span>
-    </a>
-
-    <nav class="header__nav">
-      <a href="/collections/all" class="header__nav-link">Shop</a>
-      <a href="/pages/about" class="header__nav-link">About</a>
-      <a href="/pages/contact" class="header__nav-link">Contact</a>
-    </nav>
-
-    <div class="header__icons">
-      <button class="header__icon" data-search-toggle>
-        {% render 'icon-search' %}
-      </button>
-      <button class="header__icon" data-cart-toggle>
-        {% render 'icon-cart' %}
-        <span class="cart-count" data-cart-count>{{ cart.item_count }}</span>
-      </button>
+<header class="site-header">
+  <div class="container">
+    <div class="header-content">
+      <div class="header-left">
+        <button class="menu-toggle" aria-label="Menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+      
+      <div class="header-center">
+        <a href="/" class="logo">
+          {{ shop.name }}
+        </a>
+      </div>
+      
+      <div class="header-right">
+        <a href="/cart" class="cart-link">
+          Cart ({{ cart.item_count }})
+        </a>
+      </div>
     </div>
   </div>
 </header>
@@ -197,13 +198,7 @@
 
 {% schema %}
 {
-  "name": "t:general.header",
-  "settings": [
-    {
-      "type": "link_list",
-      "id": "menu",
-      "label": "t:labels.menu"
-    }
-  ]
+  "name": "Header",
+  "settings": []
 }
 {% endschema %}

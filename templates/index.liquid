@@ -1,0 +1,39 @@
+<div class="home-page">
+  <section class="hero">
+    <div class="container">
+      <h1>{{ shop.name }}</h1>
+      <p>Unisex oversized streetwear</p>
+      <a href="/collections/all" class="cta-button">Shop Now</a>
+    </div>
+  </section>
+
+  <section class="featured-products">
+    <div class="container">
+      <h2>Featured Products</h2>
+      <div class="product-grid">
+        {% for product in collections.all.products limit: 4 %}
+          <div class="product-card">
+            <a href="{{ product.url }}">
+              <div class="product-image">
+                <img src="{{ product.featured_image | img_url: 'medium' }}" alt="{{ product.title | escape }}">
+              </div>
+              <div class="product-info">
+                <h3 class="product-title">{{ product.title }}</h3>
+                <div class="product-price">
+                  {{ product.price | money }}
+                </div>
+              </div>
+            </a>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+</div>
+
+{% schema %}
+{
+  "name": "Home Page",
+  "settings": []
+}
+{% endschema %} 

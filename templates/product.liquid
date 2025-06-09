@@ -1,0 +1,57 @@
+<div class="product-page">
+  <div class="container">
+    <div class="product-grid">
+      <div class="product-gallery">
+        {% for image in product.images %}
+          <div class="product-image">
+            <img src="{{ image | img_url: 'large' }}" alt="{{ image.alt | escape }}">
+          </div>
+        {% endfor %}
+      </div>
+      
+      <div class="product-info">
+        <h1 class="product-title">{{ product.title }}</h1>
+        <div class="product-price">
+          {{ product.price | money }}
+        </div>
+        
+        <div class="product-description">
+          {{ product.description }}
+        </div>
+        
+        <form method="post" action="/cart/add">
+          <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+          
+          {% if product.has_only_default_variant == false %}
+            <div class="product-options">
+              {% for option in product.options_with_values %}
+                <div class="option">
+                  <label>{{ option.name }}</label>
+                  <select name="options[{{ option.name }}]">
+                    {% for value in option.values %}
+                      <option value="{{ value }}">{{ value }}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+              {% endfor %}
+            </div>
+          {% endif %}
+          
+          <div class="quantity">
+            <label>Quantity</label>
+            <input type="number" name="quantity" value="1" min="1">
+          </div>
+          
+          <button type="submit" class="add-to-cart">Add to Cart</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Product",
+  "settings": []
+}
+{% endschema %} 

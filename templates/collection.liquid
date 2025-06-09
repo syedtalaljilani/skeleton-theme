@@ -1,0 +1,36 @@
+<div class="collection-page">
+  <div class="container">
+    <h1 class="collection-title">{{ collection.title }}</h1>
+    
+    {% if collection.description != blank %}
+      <div class="collection-description">
+        {{ collection.description }}
+      </div>
+    {% endif %}
+    
+    <div class="product-grid">
+      {% for product in collection.products %}
+        <div class="product-card">
+          <a href="{{ product.url }}">
+            <div class="product-image">
+              <img src="{{ product.featured_image | img_url: 'medium' }}" alt="{{ product.title | escape }}">
+            </div>
+            <div class="product-info">
+              <h2 class="product-title">{{ product.title }}</h2>
+              <div class="product-price">
+                {{ product.price | money }}
+              </div>
+            </div>
+          </a>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Collection",
+  "settings": []
+}
+{% endschema %} 
