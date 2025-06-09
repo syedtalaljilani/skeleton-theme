@@ -227,8 +227,9 @@ img {
 /* Hero section */
 .hero {
   text-align: center;
-  padding: 100px 0;
+  padding: 150px 0;
   background: #f8f8f8;
+
 }
 
 .hero h1 {
