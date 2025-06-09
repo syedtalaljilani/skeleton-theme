@@ -233,35 +233,6 @@ if (searchButton && searchModal && searchClose) {
   });
 }
 
-// Lazy loading images
-const lazyLoadImages = () => {
-  const images = document.querySelectorAll('img[loading="lazy"]');
-
-  if ("IntersectionObserver" in window) {
-    const imageObserver = new IntersectionObserver((entries, observer) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          const image = entry.target;
-          image.src = image.dataset.src;
-          image.classList.add("loaded");
-          observer.unobserve(image);
-        }
-      });
-    });
-
-    images.forEach((image) => imageObserver.observe(image));
-  } else {
-    // Fallback for browsers that don't support IntersectionObserver
-    images.forEach((image) => {
-      image.src = image.dataset.src;
-      image.classList.add("loaded");
-    });
-  }
-};
-
-// Initialize lazy loading
-document.addEventListener("DOMContentLoaded", lazyLoadImages);
-
 // Form handling
 const forms = document.querySelectorAll("form[data-ajax]");
 
