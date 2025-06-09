@@ -64,6 +64,24 @@
     padding: 0;
     cursor: pointer;
     color: #000;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .cart-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 20px;
+    height: 20px;
+    padding: 0 6px;
+    background: #000;
+    color: #fff;
+    border-radius: 10px;
+    font-size: 0.75rem;
+    font-weight: 500;
   }
 
   /* Mobile Menu Styles */
@@ -172,7 +190,8 @@
 
     <div class="header__icons">
       <a href="/cart" class="header__icon" data-cart-toggle>
-        Cart ({{ cart.item_count }})
+        Cart
+        <span class="cart-count" data-cart-count>{{ cart.item_count }}</span>
       </a>
     </div>
   </div>
@@ -206,6 +225,7 @@
       this.menuToggle = document.querySelector('[data-menu-toggle]');
       this.menuClose = document.querySelector('[data-menu-close]');
       this.mobileMenu = document.querySelector('[data-mobile-menu]');
+      this.cartCount = document.querySelector('[data-cart-count]');
       
       this.init();
     }
@@ -214,6 +234,9 @@
       window.addEventListener('scroll', this.handleScroll.bind(this));
       this.menuToggle?.addEventListener('click', this.toggleMenu.bind(this));
       this.menuClose?.addEventListener('click', this.toggleMenu.bind(this));
+      
+      // Listen for cart updates
+      document.addEventListener('cart:updated', this.handleCartUpdate.bind(this));
     }
 
     handleScroll() {
@@ -237,6 +260,12 @@
       this.mobileMenu.classList.toggle('mobile-menu--open');
       this.menuToggle.classList.toggle('menu-toggle--active');
       document.body.style.overflow = this.mobileMenu.classList.contains('mobile-menu--open') ? 'hidden' : '';
+    }
+
+    handleCartUpdate(event) {
+      if (this.cartCount && event.detail?.item_count !== undefined) {
+        this.cartCount.textContent = event.detail.item_count;
+      }
     }
   }
 
