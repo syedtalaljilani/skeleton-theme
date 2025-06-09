@@ -550,26 +550,6 @@
         }
       };
 
-      // Quantity selectors
-      const quantityInput = document.querySelector("[data-quantity-input]");
-      const minusButton = document.querySelector("[data-quantity-minus]");
-      const plusButton = document.querySelector("[data-quantity-plus]");
-
-      if (minusButton && quantityInput) {
-        safeAddEventListener(minusButton, "click", function() {
-          let value = parseInt(quantityInput.value) || 1;
-          if (value > 1) {
-            quantityInput.value = value - 1;
-          }
-        });
-      }
-
-      if (plusButton && quantityInput) {
-        safeAddEventListener(plusButton, "click", function() {
-          let value = parseInt(quantityInput.value) || 1;
-          quantityInput.value = value + 1;
-        });
-      }
 
       // Handle variant changes
       const variantSelects = document.querySelectorAll(".variant-select");
