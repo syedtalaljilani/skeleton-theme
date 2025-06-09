@@ -354,22 +354,6 @@
           </button>
         </div>
       </div>
-      
-      {% if product.images.size > 1 %}
-        <div class="product__thumbnails">
-          {% for image in product.images %}
-            <div class="product__thumbnail-wrapper">
-              {% render 'image',
-                image: image,
-                class: 'product__thumbnail' | append: forloop.first | append: ' active',
-                width: 200,
-                height: 200,
-                data_thumbnail: true
-              %}
-            </div>
-          {% endfor %}
-        </div>
-      {% endif %}
     </div>
 
     <div class="product__info">
