@@ -35,19 +35,7 @@ html {
   scroll-behavior: smooth;
 }
 
-body {
-  font-family: var(--font-primary);
-  color: var(--color-text);
-  background-color: #a61a1a;
-  line-height: 1.5;
-  margin: 0;
-  padding: 0;
-  overflow-x: hidden;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
 
-}
 
 /* Typography */
 h1,
