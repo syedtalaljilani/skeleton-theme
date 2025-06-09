@@ -1,6 +1,6 @@
 {% schema %}
 {
-  "name": "Hero",
+  "name": "Hero Section",
   "settings": [
     {
       "type": "text",
@@ -34,132 +34,113 @@
   ],
   "presets": [
     {
-      "name": "Hero"
+      "name": "Hero Section"
     }
   ]
 }
 {% endschema %}
 
-<div class="hero-section">
-  <div class="hero-content">
-    <div class="hero-text">
-      <div class="hero-heading">
-        <span class="urdu-text">{{ section.settings.heading }}</span>
-        <span class="urdu-text">{{ section.settings.urdu_text }}</span>
-      </div>
+<section class="hero-section">
+  <div class="hero-container">
+    <div class="hero-text-content">
+      <h1 class="hero-heading">
+        <span class="hero-heading-main">{{ section.settings.heading }}</span>
+        <span class="hero-heading-urdu">{{ section.settings.urdu_text }}</span>
+      </h1>
       <p class="hero-subheading">{{ section.settings.subheading }}</p>
-      <div class="hero-cta">
-        <a href="/collections/all" class="cta-button">
-          <span>{{ section.settings.cta_text }}</span>
-        </a>
-        <a href="/pages/about" class="cta-button">
-          <span>Learn More</span>
-        </a>
+      <div class="hero-cta-buttons">
+        <a href="/collections/all" class="cta-button">{{ section.settings.cta_text }}</a>
+        <a href="/pages/about" class="cta-button secondary">Learn More</a>
       </div>
     </div>
-    <div class="hero-image">
-      {% if section.settings.image %}
-        {{ section.settings.image | image_url: width: 2000 | image_tag }}
-      {% endif %}
-    </div>
+
+    {% if section.settings.image %}
+      <div class="hero-image-container">
+        {{ section.settings.image | image_url: width: 2000 | image_tag: loading: 'lazy', class: 'hero-image' }}
+      </div>
+    {% endif %}
   </div>
-</div>
+</section>
 
 <style>
-html, body {
-  margin: 0 !important;
-  padding: 0 !important;
-  box-sizing: border-box;
-}
-
 .hero-section {
-  position: relative;
-  min-height: 100vh;
-  width: 100%;
   display: flex;
   align-items: center;
-  padding: 0;
-  background: #fff;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 2rem 1rem;
+  background-color: #fff;
   overflow: hidden;
 }
 
-.hero-content {
-  position: relative;
-  width: 100%;
-  max-width: 1600px;
-  margin: 0 auto;
-  padding: 0 2rem;
+.hero-container {
   display: grid;
-  grid-template-columns: 1.2fr 0.8fr;
-  gap: 0;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  max-width: 1600px;
+  width: 100%;
   align-items: center;
 }
 
-.hero-text {
-  position: relative;
-  z-index: 2;
-  padding-right: 4rem;
+.hero-text-content {
+  padding: 1rem;
+  text-align: left;
 }
 
 .hero-heading {
-  position: relative;
-  margin-bottom: 4rem;
+  margin-bottom: 2rem;
 }
 
-.urdu-text {
-  font-family: var(--font-primary);
-  font-size: clamp(6rem, 15vw, 12rem);
-  line-height: 0.85;
+.hero-heading-main {
   display: block;
-  color: #000;
-  position: relative;
-  transform: translateX(-2rem);
-}
-
-.urdu-text:first-child {
+  font-size: clamp(3rem, 8vw, 6rem);
   color: #f0f0f0;
   -webkit-text-stroke: 1px #000;
+  line-height: 0.85;
+}
+
+.hero-heading-urdu {
+  display: block;
+  font-size: clamp(5rem, 10vw, 10rem);
+  color: #000;
+  line-height: 0.85;
 }
 
 .hero-subheading {
-  font-family: var(--font-primary);
-  font-size: clamp(1.5rem, 2vw, 2rem);
-  line-height: 1.4;
+  font-size: 1.25rem;
   color: #333;
   max-width: 500px;
-  margin-left: 2rem;
+  margin: 1rem 0 2rem;
   position: relative;
+  padding-left: 2rem;
 }
 
 .hero-subheading::before {
   content: '';
   position: absolute;
-  left: -2rem;
+  left: 0;
   top: 50%;
   width: 1.5rem;
   height: 1px;
   background: #000;
+  transform: translateY(-50%);
 }
 
-.hero-cta {
+.hero-cta-buttons {
   display: flex;
-  gap: 2rem;
-  margin-left: 2rem;
-  margin-top: 3rem;
+  flex-wrap: wrap;
+  gap: 1rem;
 }
 
 .cta-button {
-  font-family: var(--font-secondary);
-  display: inline-flex;
-  align-items: center;
-  padding: 1.25rem 2.5rem;
+  padding: 1rem 2rem;
   background: #000;
   color: #fff;
   text-decoration: none;
   font-size: 1rem;
   font-weight: 500;
-  transition: all 0.3s ease;
   border: 1px solid #000;
+  transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
 }
@@ -180,23 +161,24 @@ html, body {
   transform: translateX(0);
 }
 
-.cta-button span {
-  position: relative;
-  z-index: 1;
-}
-
-.cta-button:hover span {
+.cta-button span,
+.cta-button.secondary:hover {
   color: #000;
 }
 
-.hero-image {
+.cta-button.secondary {
+  background: transparent;
+  color: #000;
+}
+
+.hero-image-container {
   position: relative;
   width: 100%;
-  height: 100vh;
+  height: 100%;
   overflow: hidden;
 }
 
-.hero-image img {
+.hero-image {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -204,7 +186,7 @@ html, body {
   transition: transform 0.5s ease;
 }
 
-.hero-image::after {
+.hero-image-container::after {
   content: '';
   position: absolute;
   top: 0;
@@ -214,97 +196,29 @@ html, body {
   background: linear-gradient(to right, #fff 0%, transparent 20%);
 }
 
-@media (max-width: 1200px) {
-  .hero-content {
-    grid-template-columns: 1fr;
-    padding: 4rem 2rem;
-  }
-
-  .hero-text {
-    padding-right: 0;
-    margin-bottom: 2rem;
-  }
-
-  .hero-image {
-    height: 60vh;
-  }
-
-  .hero-image::after {
-    background: linear-gradient(to bottom, #fff 0%, transparent 20%);
-  }
-}
-
 @media (max-width: 768px) {
-  .hero-section {
-    padding: 2rem 0;
-  }
-
-  .hero-content {
-    padding: 2rem 1rem;
-  }
-
-  .hero-text {
+  .hero-text-content {
     text-align: center;
   }
 
-  .urdu-text {
-    transform: translateX(0);
-  }
-
   .hero-subheading {
-    margin: 0 auto;
+    padding-left: 0;
   }
 
   .hero-subheading::before {
     display: none;
   }
 
-  .hero-cta {
-    margin: 2rem auto 0;
+  .hero-cta-buttons {
     justify-content: center;
   }
 
-  .hero-image {
+  .hero-image-container {
     height: 50vh;
   }
-}
 
-/* Tablet */
-@media screen and (min-width: 768px) and (max-width: 1024px) {
-  .hero-section {
-    padding: 3rem 2rem;
-  }
-  
-  .hero-content {
-    padding: 0 2rem;
+  .hero-image-container::after {
+    background: linear-gradient(to bottom, #fff 0%, transparent 20%);
   }
 }
-
-/* Mobile */
-@media screen and (max-width: 767px) {
-  .hero-section {
-    padding: 1rem;
-  }
-  
-  .hero-content {
-    padding: 0 1rem;
-  }
-  
-  .hero-heading {
-    gap: 0.25rem;
-  }
-  
-  .urdu-text {
-    margin-top: 0.25rem;
-  }
-  
-  .hero-subheading {
-    margin: 1rem auto;
-  }
-  
-  .cta-button {
-    width: 100%;
-    max-width: 300px;
-  }
-}
-</style> 
+</style>
