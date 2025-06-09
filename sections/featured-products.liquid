@@ -62,6 +62,7 @@
   padding-bottom: 125%;
   overflow: hidden;
   border-radius: 16px 16px 0 0;
+  background: #000;
 }
 
 .product-card__image {
@@ -72,6 +73,7 @@
   height: 100%;
   object-fit: cover;
   transition: transform 0.8s ease;
+  display: block;
 }
 
 .product-card:hover .product-card__image {
@@ -198,14 +200,24 @@
           <span class="limited-badge">Limited</span>
         {% endif %}
         <a href="{{ product.url }}" class="product-card__image-wrapper">
-          <img 
-            src="{{ product.featured_image | img_url: '800x' }}" 
-            alt="{{ product.title }}"
-            class="product-card__image"
-            loading="lazy"
-            width="800"
-            height="1000"
-          >
+          {% if product.featured_image %}
+            <img 
+              src="{{ product.featured_image | img_url: '800x' }}"
+              srcset="{{ product.featured_image | img_url: '400x' }} 400w,
+                      {{ product.featured_image | img_url: '600x' }} 600w,
+                      {{ product.featured_image | img_url: '800x' }} 800w"
+              sizes="(max-width: 400px) 400px,
+                     (max-width: 600px) 600px,
+                     800px"
+              alt="{{ product.title }}"
+              class="product-card__image"
+              loading="lazy"
+              width="800"
+              height="1000"
+            >
+          {% else %}
+            {{ 'product-1' | placeholder_svg_tag: 'product-card__image' }}
+          {% endif %}
         </a>
         
         <div class="product-card__info">
