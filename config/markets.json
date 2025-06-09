@@ -8,16 +8,5 @@
  * ------------------------------------------------------------
  */
 {
-  "sections": {
-    "featured_products": {
-      "type": "featured-products",
-      "settings": {
-        "collection": "all",
-        "products_to_show": 6
-      }
-    }
-  },
-  "order": [
-    "featured_products"
-  ]
+  "markets": {}
 }
