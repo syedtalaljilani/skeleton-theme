@@ -59,17 +59,11 @@ html, body {
   position: relative;
   min-height: 100vh;
   width: 100%;
-  left: 50%;
-  right: 50%;
-  margin-left: -50vw;
-  margin-right: -50vw;
-  overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #ffffff;
-  box-sizing: border-box;
-  padding: 2rem 1rem;
+  padding: 2rem;
+  overflow: hidden;
 }
 
 .gradient-bg {
@@ -91,52 +85,80 @@ html, body {
 }
 
 .hero-content {
+  position: relative;
+  z-index: 2;
   text-align: center;
-  z-index: 1;
   max-width: 1200px;
   width: 100%;
-  padding: 0 1rem;
 }
 
 .hero-heading {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
-  margin-bottom: 2rem;
-  font-family: var(--font-primary);
-  font-size: 3.5rem;
-  line-height: 1.2;
-  display: block;
+  gap: 2rem;
+  margin-bottom: 3rem;
 }
 
 .urdu-text {
   font-family: var(--font-primary);
-  font-size: 3.5rem;
-  line-height: 1.2;
+  font-size: clamp(4rem, 10vw, 8rem);
+  line-height: 1.1;
   display: block;
+  letter-spacing: -0.02em;
 }
 
 .hero-subheading {
   font-family: var(--font-primary);
-  font-size: 1.5rem;
-  margin-bottom: 2rem;
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  margin-bottom: 3rem;
   opacity: 0.8;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.4;
 }
 
 .cta-button {
   font-family: var(--font-secondary);
   display: inline-block;
-  padding: 1rem 2rem;
+  padding: 1.25rem 3rem;
   background: #000;
   color: #fff;
   text-decoration: none;
   border-radius: 4px;
+  font-size: 1.125rem;
+  font-weight: 500;
   transition: all 0.3s ease;
 }
 
 .cta-button:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+@media (max-width: 768px) {
+  .hero-section {
+    padding: 1rem;
+  }
+  
+  .hero-heading {
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+  }
+  
+  .urdu-text {
+    font-size: clamp(3rem, 8vw, 6rem);
+  }
+  
+  .hero-subheading {
+    font-size: clamp(1.25rem, 2.5vw, 1.75rem);
+    margin-bottom: 2rem;
+  }
+  
+  .cta-button {
+    padding: 1rem 2rem;
+    font-size: 1rem;
+  }
 }
 
 /* Tablet */
