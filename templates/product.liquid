@@ -713,10 +713,7 @@
               if (cartCount) {
                 // Use the cart item count directly
                 cartCount.textContent = cart.item_count;
-                
-                // Alternative option if you want to show 2 for a single product:
-                // const displayCount = cart.items.length + 1; 
-                // cartCount.textContent = displayCount;
+                cartCount.classList.toggle("empty", cart.item_count === 0);
               }
             })
             .catch((error) => console.error("Error fetching cart:", error));
