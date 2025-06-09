@@ -1,31 +1,31 @@
-<div class="product-page product-page--margin-top bw-theme">
-  <div class="container">
-    <div class="product-grid">
-      <div class="product-gallery">
+<div class="product-page-modern">
+  <div class="container-modern">
+    <div class="product-grid-modern">
+      <div class="product-gallery-modern">
         {% for image in product.images offset:1 %}
-          <div class="product-image bw-image">
+          <div class="product-image-modern">
             <img src="{{ image | image_url: width: 800 }}" alt="{{ image.alt | escape }}" width="{{ image.width }}" height="{{ image.height }}">
           </div>
         {% endfor %}
       </div>
       
-      <div class="product-info bw-info">
-        <h1 class="product-title bw-title">{{ product.title }}</h1>
-        <div class="product-price bw-price">
+      <div class="product-info-modern">
+        <h1 class="product-title-modern">{{ product.title }}</h1>
+        <div class="product-price-modern">
           {{ product.price | money }}
         </div>
         
-        <div class="product-description bw-description">
+        <div class="product-description-modern">
           {{ product.description }}
         </div>
         
-        <form method="post" action="/cart/add" class="bw-form">
+        <form method="post" action="/cart/add" class="product-form-modern">
           <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
           
           {% if product.has_only_default_variant == false %}
-            <div class="product-options bw-options">
+            <div class="product-options-modern">
               {% for option in product.options_with_values %}
-                <div class="option bw-option">
+                <div class="option-modern">
                   <label>{{ option.name }}</label>
                   <select name="options[{{ option.name }}]">
                     {% for value in option.values %}
@@ -37,12 +37,12 @@
             </div>
           {% endif %}
           
-          <div class="quantity bw-quantity">
+          <div class="quantity-modern">
             <label>Quantity</label>
             <input type="number" name="quantity" value="1" min="1">
           </div>
           
-          <button type="submit" class="add-to-cart bw-add-to-cart">Add to Cart</button>
+          <button type="submit" class="add-to-cart-modern">Add to Cart</button>
         </form>
       </div>
     </div>
@@ -50,100 +50,181 @@
 </div>
 
 <style>
-.bw-theme {
-  background: #fff;
-  color: #111;
+.product-page-modern {
+  background: #000;
+  color: #fff;
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  min-height: 100vh;
+  padding-top: 3rem;
+  padding-bottom: 3rem;
 }
-.bw-theme .container {
-  max-width: 1100px;
+
+.container-modern {
+  max-width: 1200px;
   margin: 0 auto;
   padding: 2rem;
 }
-.product-grid {
+
+.product-grid-modern {
   display: flex;
   gap: 3rem;
   align-items: flex-start;
+  background: rgba(0,0,0,0.6);
+  border-radius: 24px;
+  box-shadow: 0 4px 32px rgba(0,0,0,0.25);
+  overflow: hidden;
 }
-.product-gallery {
+
+.product-gallery-modern {
   flex: 1;
-  background: #fff;
-  border: 1px solid #111;
-  padding: 1rem;
+  background: #111;
+  border-right: 1px solid #222;
+  padding: 2rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  min-width: 0;
 }
-.bw-image img {
+
+.product-image-modern img {
   width: 100%;
-  filter: grayscale(100%);
-  border: 2px solid #111;
-  background: #fff;
+  border-radius: 16px;
+  object-fit: cover;
+  background: #222;
+  border: 2px solid #222;
+  filter: brightness(0.92) grayscale(10%);
+  box-shadow: 0 2px 16px rgba(0,0,0,0.18);
+  transition: transform 0.4s cubic-bezier(.4,2,.6,1), filter 0.3s;
 }
-.bw-info {
+.product-image-modern img:hover {
+  transform: scale(1.03);
+  filter: brightness(1) grayscale(0%);
+}
+
+.product-info-modern {
   flex: 1;
-  background: #111;
+  background: rgba(0,0,0,0.7);
   color: #fff;
-  padding: 2rem;
-  border-radius: 8px;
-  border: 1px solid #111;
+  padding: 2.5rem 2rem;
+  border-radius: 0 24px 24px 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 0;
 }
-.bw-title {
-  font-size: 2.2rem;
-  font-weight: bold;
+
+.product-title-modern {
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-weight: 800;
   margin-bottom: 1rem;
-  color: #fff;
-  letter-spacing: 1px;
+  letter-spacing: -0.02em;
+  background: linear-gradient(to right, #fff, #ccc);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 2px 10px rgba(255,255,255,0.1);
 }
-.bw-price {
-  font-size: 1.5rem;
-  font-weight: bold;
+
+.product-price-modern {
+  font-size: 2rem;
+  font-weight: 700;
   color: #fff;
   background: #111;
-  border-bottom: 1px solid #fff;
-  padding-bottom: 0.5rem;
-  margin-bottom: 1.5rem;
-}
-.bw-description {
-  font-size: 1rem;
-  color: #eee;
+  border-radius: 8px;
+  padding: 0.5rem 1.5rem;
   margin-bottom: 2rem;
+  display: inline-block;
+  box-shadow: 0 2px 8px rgba(255,255,255,0.08);
 }
-.bw-form label {
+
+.product-description-modern {
+  font-size: 1.15rem;
+  color: #e0e0e0;
+  margin-bottom: 2.5rem;
+  line-height: 1.6;
+}
+
+.product-form-modern label {
   color: #fff;
   font-weight: 600;
+  margin-bottom: 0.25rem;
+  display: block;
 }
-.bw-options, .bw-quantity {
+
+.product-options-modern, .quantity-modern {
   margin-bottom: 1.5rem;
 }
-.bw-option select, .bw-quantity input[type="number"] {
+
+.option-modern select, .quantity-modern input[type="number"] {
   background: #fff;
   color: #111;
   border: 1px solid #fff;
-  padding: 0.5rem;
-  border-radius: 4px;
+  padding: 0.6rem 1rem;
+  border-radius: 8px;
+  margin-top: 0.5rem;
+  font-size: 1rem;
+  font-weight: 500;
+  outline: none;
+  transition: border 0.2s;
+}
+
+.option-modern select:focus, .quantity-modern input[type="number"]:focus {
+  border: 1.5px solid #ccc;
+}
+
+.add-to-cart-modern {
+  display: inline-block;
+  padding: 1rem 2.5rem;
+  background: #000;
+  color: #fff;
+  font-size: 1.1rem;
+  font-weight: 700;
+  text-decoration: none;
+  border-radius: 50px;
+  border: 2px solid #fff;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(.4,2,.6,1);
+  box-shadow: 0 2px 8px rgba(255,255,255,0.08);
   margin-top: 0.5rem;
 }
-.bw-add-to-cart {
+
+.add-to-cart-modern:hover {
   background: #fff;
-  color: #111;
-  border: 2px solid #111;
-  padding: 0.75rem 2rem;
-  font-size: 1.1rem;
-  font-weight: bold;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background 0.2s, color 0.2s;
+  color: #000;
+  border: 2px solid #fff;
+  transform: translateY(-2px) scale(1.03);
 }
-.bw-add-to-cart:hover {
-  background: #111;
+
+.add-to-cart-modern:active {
+  background: #000;
   color: #fff;
   border: 2px solid #fff;
 }
+
 @media (max-width: 900px) {
-  .product-grid {
+  .product-grid-modern {
     flex-direction: column;
     gap: 2rem;
+    border-radius: 18px;
   }
-  .bw-info, .product-gallery {
-    padding: 1rem;
+  .product-info-modern, .product-gallery-modern {
+    padding: 1.5rem 1rem;
+    border-radius: 0;
+  }
+}
+
+@media (max-width: 600px) {
+  .container-modern {
+    padding: 0.5rem;
+  }
+  .product-info-modern, .product-gallery-modern {
+    padding: 1rem 0.5rem;
+  }
+  .product-title-modern {
+    font-size: 2rem;
+  }
+  .product-price-modern {
+    font-size: 1.2rem;
+    padding: 0.4rem 1rem;
   }
 }
 </style>
@@ -153,4 +234,4 @@
   "name": "Product",
   "settings": []
 }
-{% endschema %} 
+{% endschema %}
