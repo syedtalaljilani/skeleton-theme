@@ -1,74 +1,71 @@
 {%- style -%}
 .featured-products {
   padding: 8rem 2rem;
-  max-width: 1200px;
-  margin: 0 auto;
-  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #0a0a0a 100%);
-  color: #fff;
+  width: 100%;
+  margin: 0;
+  background: #ffffff;
+  color: #000;
   position: relative;
-  overflow: hidden;
+  display: flex;
+  align-items: center;
+  min-height: 100vh;
 }
 
-.featured-products::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 1px;
-  background: linear-gradient(to right, transparent, rgba(255,255,255,0.3), transparent);
+.featured-products__container {
+  display: flex;
+  width: 100%;
+  max-width: 2000px;
+  margin: 0 auto;
+  gap: 4rem;
+  align-items: center;
 }
 
 .featured-products__header {
-  text-align: center;
-  margin-bottom: 5rem;
-  position: relative;
+  flex: 1;
+  text-align: left;
+  padding-left: 4rem;
 }
 
 .featured-products__title {
-  font-size: clamp(2.5rem, 6vw, 4rem);
-  font-weight: 800;
-  margin-bottom: 1.5rem;
+  font-size: clamp(4rem, 10vw, 12rem);
+  font-weight: 900;
+  margin-bottom: 2rem;
   text-transform: uppercase;
-  letter-spacing: 0.15em;
-  background: linear-gradient(45deg, #fff 0%, #ccc 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  text-shadow: 0 2px 10px rgba(255,255,255,0.1);
+  letter-spacing: -0.02em;
+  line-height: 0.9;
+  color: #000;
+  position: relative;
 }
 
 .featured-products__subtitle {
   font-size: 1.5rem;
-  color: #ccc;
-  max-width: 700px;
-  margin: 0 auto;
+  color: #666;
+  max-width: 500px;
   line-height: 1.6;
-  font-weight: 300;
-  text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  font-weight: 400;
 }
 
 .featured-products__grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  max-width: 800px;
-  margin: 0 auto;
-  gap: 4rem;
-  position: relative;
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .product-card {
   position: relative;
   overflow: hidden;
-  background: linear-gradient(145deg, #1a1a1a 0%, #0a0a0a 100%);
+  background: #fff;
   border-radius: 12px;
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  max-width: 600px;
+  width: 100%;
 }
 
 .product-card:hover {
   transform: translateY(-15px);
-  box-shadow: 0 8px 30px rgba(255,255,255,0.1);
-  background: linear-gradient(145deg, #222 0%, #111 100%);
+  box-shadow: 0 8px 30px rgba(0,0,0,0.15);
 }
 
 .product-card__image-wrapper {
@@ -76,6 +73,7 @@
   padding-bottom: 125%;
   overflow: hidden;
   border-radius: 12px 12px 0 0;
+  background: #f5f5f5;
 }
 
 .product-card__image {
@@ -95,28 +93,28 @@
 .product-card__info {
   padding: 2rem;
   position: relative;
-  background: linear-gradient(to bottom, #1a1a1a, #0a0a0a);
+  background: #fff;
 }
 
 .product-card__title {
   font-weight: 600;
   font-size: 1.5rem;
   margin-bottom: 0.75rem;
-  color: #fff;
+  color: #000;
 }
 
 .product-card__title a {
-  color: #fff;
+  color: #000;
   text-decoration: none;
   transition: color 0.3s ease;
 }
 
 .product-card__title a:hover {
-  color: #ccc;
+  color: #666;
 }
 
 .product-card__price {
-  color: #fff;
+  color: #000;
   font-size: 1.25rem;
   font-weight: 500;
   margin-bottom: 1rem;
@@ -126,8 +124,8 @@
   position: absolute;
   bottom: 2rem;
   right: 2rem;
-  background: #fff;
-  color: #000;
+  background: #000;
+  color: #fff;
   padding: 1rem 2rem;
   border: none;
   font-weight: 600;
@@ -138,7 +136,7 @@
   text-transform: uppercase;
   font-size: 0.875rem;
   letter-spacing: 0.1em;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
 }
 
 .product-card:hover .product-card__quick-add {
@@ -147,9 +145,9 @@
 }
 
 .product-card__quick-add:hover {
-  background: #000;
-  color: #fff;
-  border: 2px solid #fff;
+  background: #fff;
+  color: #000;
+  border: 2px solid #000;
   transform: translateY(-8px);
 }
 
@@ -157,7 +155,7 @@
   position: absolute;
   top: 1.5rem;
   right: 1.5rem;
-  background: linear-gradient(45deg, #ff3b3b 0%, #ff6b6b 100%);
+  background: #000;
   color: #fff;
   padding: 0.75rem 1.5rem;
   font-size: 0.875rem;
@@ -166,33 +164,33 @@
   z-index: 2;
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  box-shadow: 0 4px 15px rgba(255,59,59,0.3);
-  animation: pulse 2s infinite;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
 }
 
-@keyframes pulse {
-  0% {
-    transform: scale(1);
+@media (max-width: 1024px) {
+  .featured-products__container {
+    flex-direction: column;
+    text-align: center;
+    padding: 2rem;
   }
-  50% {
-    transform: scale(1.05);
+
+  .featured-products__header {
+    padding-left: 0;
+    text-align: center;
   }
-  100% {
-    transform: scale(1);
+
+  .featured-products__subtitle {
+    margin: 0 auto;
+  }
+
+  .featured-products__title {
+    font-size: clamp(3rem, 8vw, 8rem);
   }
 }
 
 @media (max-width: 768px) {
   .featured-products {
-    padding: 6rem 1rem;
-  }
-
-  .featured-products__title {
-    font-size: 2.5rem;
-  }
-
-  .featured-products__subtitle {
-    font-size: 1.25rem;
+    padding: 4rem 1rem;
   }
 
   .product-card__quick-add {
@@ -211,41 +209,43 @@
 {%- endstyle -%}
 
 <div class="featured-products">
-  <div class="featured-products__header">
-    <h2 class="featured-products__title">Limited Edition</h2>
-    <p class="featured-products__subtitle">
-      Experience luxury in every thread. Limited edition oversized t-shirts crafted for those who appreciate exceptional quality.
-    </p>
-  </div>
+  <div class="featured-products__container">
+    <div class="featured-products__header">
+      <h2 class="featured-products__title">Limited Edition</h2>
+      <p class="featured-products__subtitle">
+        Experience luxury in every thread. Limited edition oversized t-shirts crafted for those who appreciate exceptional quality.
+      </p>
+    </div>
 
-  <div class="featured-products__grid">
-    {% for product in collections[section.settings.collection].products limit: 1 %}
-      <div class="product-card">
-        <span class="limited-badge">Limited</span>
-        <a href="{{ product.url }}" class="product-card__image-wrapper">
-          {{ product.featured_image | image_url: width: 800 | image_tag:
-            loading: 'lazy',
-            class: 'product-card__image',
-            widths: '400,600,800,1000,1200',
-            sizes: '(max-width: 768px) 100vw, 800px'
-          }}
-        </a>
-        
-        <div class="product-card__info">
-          <h3 class="product-card__title">
-            <a href="{{ product.url }}">{{ product.title }}</a>
-          </h3>
-          <p class="product-card__price">{{ product.price | money }}</p>
-          <button 
-            class="product-card__quick-add"
-            data-quick-add
-            data-variant-id="{{ product.selected_or_first_available_variant.id }}"
-          >
-            Quick Add
-          </button>
+    <div class="featured-products__grid">
+      {% for product in collections[section.settings.collection].products limit: 1 %}
+        <div class="product-card">
+          <span class="limited-badge">Limited</span>
+          <a href="{{ product.url }}" class="product-card__image-wrapper">
+            {{ product.featured_image | image_url: width: 800 | image_tag:
+              loading: 'lazy',
+              class: 'product-card__image',
+              widths: '400,600,800,1000,1200',
+              sizes: '(max-width: 768px) 100vw, 800px'
+            }}
+          </a>
+          
+          <div class="product-card__info">
+            <h3 class="product-card__title">
+              <a href="{{ product.url }}">{{ product.title }}</a>
+            </h3>
+            <p class="product-card__price">{{ product.price | money }}</p>
+            <button 
+              class="product-card__quick-add"
+              data-quick-add
+              data-variant-id="{{ product.selected_or_first_available_variant.id }}"
+            >
+              Quick Add
+            </button>
+          </div>
         </div>
-      </div>
-    {% endfor %}
+      {% endfor %}
+    </div>
   </div>
 </div>
 
