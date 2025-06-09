@@ -229,12 +229,11 @@ img {
   text-align: center;
   padding: 150px 0;
   background: #f8f8f8;
-
 }
 
 .hero h1 {
   font-size: 48px;
-  margin-bottom: 20px;
+  margin-bottom: 40px;
 }
 
 .cta-button {
