@@ -76,9 +76,9 @@
           <div class="quantity-modern">
             <label for="product-qty">Quantity</label>
             <div class="quantity-selector">
-              <button type="button" class="qty-btn" data-quantity-minus aria-label="Decrease quantity">-</button>
-              <input id="product-qty" type="number" name="quantity" value="1" min="1" data-quantity-input>
-              <button type="button" class="qty-btn" data-quantity-plus aria-label="Increase quantity">+</button>
+              <button type="button" class="qty-btn" data-product-quantity-minus aria-label="Decrease quantity">-</button>
+              <input id="product-qty" type="number" name="quantity" value="1" min="1" data-product-quantity-input>
+              <button type="button" class="qty-btn" data-product-quantity-plus aria-label="Increase quantity">+</button>
             </div>
           </div>
           
@@ -628,6 +628,35 @@
           }
         });
       }
+
+      const productQuantityInput = document.querySelector("[data-product-quantity-input]");
+const productQuantityMinus = document.querySelector("[data-product-quantity-minus]");
+const productQuantityPlus = document.querySelector("[data-product-quantity-plus]");
+
+if (productQuantityMinus && productQuantityInput) {
+  safeAddEventListener(productQuantityMinus, "click", () => {
+    const currentValue = parseInt(productQuantityInput.value);
+    if (currentValue > 1) {
+      productQuantityInput.value = currentValue - 1;
+    }
+  });
+}
+
+if (productQuantityPlus && productQuantityInput) {
+  safeAddEventListener(productQuantityPlus, "click", () => {
+    const currentValue = parseInt(productQuantityInput.value);
+    productQuantityInput.value = currentValue + 1;
+  });
+}
+
+if (productQuantityInput) {
+  safeAddEventListener(productQuantityInput, "change", () => {
+    let value = parseInt(productQuantityInput.value);
+    if (isNaN(value) || value < 1) {
+      productQuantityInput.value = 1;
+    }
+  });
+}
 
       // AJAX add to cart
       const addToCartForm = document.querySelector("[data-product-form]");
