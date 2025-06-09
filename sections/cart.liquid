@@ -288,10 +288,11 @@
                   <div class="quantity-adjuster">
                     <button type="button" class="quantity-button" data-quantity-minus>-</button>
                     <input
-                      type="number"
+                      type="text"
                       name="updates[]"
                       value="{{ item.quantity }}"
                       min="1"
+                      readonly
                       class="cart-item__quantity-input"
                       data-quantity-input
                     >
