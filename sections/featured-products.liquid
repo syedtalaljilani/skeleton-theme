@@ -222,7 +222,7 @@
         <div class="product-card">
           <span class="limited-badge">Limited</span>
           <a href="{{ product.url }}" class="product-card__image-wrapper">
-            {{ product.featured_image | image_url: width: 800 | image_tag:
+            {{ product.featured_media | image_url: width: 800 | image_tag: 
               loading: 'lazy',
               class: 'product-card__image',
               widths: '400,600,800,1000,1200',
