@@ -262,13 +262,12 @@
               <div class="cart-item__image-wrapper">
                 {% if item.image %}
                   <img 
-                    src="{{ item.image | image_url: width: 240 }}"
+                    src="{{ item.image | img_url: '240x' }}"
                     alt="{{ item.title | escape }}"
                     class="cart-item__image"
                     loading="lazy"
                     width="120"
                     height="120"
-                    onerror="this.onerror=null; this.src='{{ 'product-1' | placeholder_svg_tag }}'"
                   >
                 {% else %}
                   {{ 'product-1' | placeholder_svg_tag: 'cart-item__image' }}
@@ -302,7 +301,7 @@
               </div>
 
               <div class="cart-item__price" data-item-price>
-                {{ item.final_line_price | money }}
+                {{ item.final_line_price | money_with_currency }}
               </div>
             </div>
           {% endfor %}
@@ -311,7 +310,7 @@
         <div class="cart__footer">
           <div class="cart__subtotal">
             <span>{{ 'cart.subtotal' | t }}</span>
-            <span data-cart-subtotal>{{ cart.total_price | money }}</span>
+            <span data-cart-subtotal>{{ cart.total_price | money_with_currency }}</span>
           </div>
 
           <button type="submit" name="checkout" class="cart__checkout">
@@ -344,7 +343,6 @@
       this.subtotal = this.form.querySelector('[data-cart-subtotal]');
       
       this.init();
-      this.handleImages();
     }
 
     init() {
@@ -359,29 +357,6 @@
         input?.addEventListener('change', () => this.updateCart());
         removeButton?.addEventListener('click', (e) => this.removeItem(e, item));
       });
-    }
-
-    handleImages() {
-      const images = document.querySelectorAll('.cart-item__image');
-      images.forEach(img => {
-        if (img.complete) {
-          this.checkImage(img);
-        } else {
-          img.addEventListener('load', () => this.checkImage(img));
-          img.addEventListener('error', () => this.handleImageError(img));
-        }
-      });
-    }
-
-    checkImage(img) {
-      if (img.naturalWidth === 0) {
-        this.handleImageError(img);
-      }
-    }
-
-    handleImageError(img) {
-      img.src = '{{ "product-1" | placeholder_svg_tag }}';
-      img.classList.add('cart-item__image--error');
     }
 
     async updateQuantity(item, change) {
@@ -471,7 +446,7 @@
     formatMoney(cents) {
       return (cents / 100).toLocaleString('en-US', {
         style: 'currency',
-        currency: 'USD'
+        currency: window.Shopify.currency.active || 'USD'
       });
     }
   }
