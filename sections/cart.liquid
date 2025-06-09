@@ -367,6 +367,7 @@
       
       input.value = newValue;
       await this.updateCart();
+      window.location.reload();
     }
 
     async updateCart() {
@@ -380,6 +381,13 @@
         
         const cart = await response.json();
         this.updateCartUI(cart);
+        
+        // Dispatch cart update event
+        document.dispatchEvent(new CustomEvent('cart:updated', {
+          detail: {
+            item_count: cart.item_count
+          }
+        }));
       } catch (error) {
         console.error('Error updating cart:', error);
       }
