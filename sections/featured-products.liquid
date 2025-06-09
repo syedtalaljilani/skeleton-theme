@@ -218,37 +218,40 @@
     </div>
 
     <div class="featured-products__grid">
-      {% for product in collections[section.settings.collection].products limit: 1 %}
-        <div class="product-card">
-          <span class="limited-badge">Limited</span>
-          <a href="{{ product.url }}" class="product-card__image-wrapper">
-            {% if product.featured_image %}
-            {{ product.featured_image | image_url: width: 800 | image_tag: 
-              class: 'product-card__image',
-              loading: 'lazy',
-              alt: product.featured_image.alt | escape
-            }}
-            {% else %}
-              {{ 'product-1' | placeholder_svg_tag: 'product-card__image' }}
-            {% endif %}
-          </a>
-          
-          <div class="product-card__info">
-            <h3 class="product-card__title">
-              <a href="{{ product.url }}">{{ product.title }}</a>
-            </h3>
-            <p class="product-card__price">{{ product.price | money }}</p>
-            <button 
-              class="product-card__quick-add"
-              data-quick-add
-              data-variant-id="{{ product.selected_or_first_available_variant.id }}"
-            >
-              Quick Add
-            </button>
-          </div>
-        </div>
-      {% endfor %}
+  {% for product in collections[section.settings.collection].products limit: 1 %}
+    <div class="product-card">
+      <span class="limited-badge">Limited</span>
+      <a href="{{ product.url }}" class="product-card__image-wrapper">
+        {% if product.featured_image %}
+          <img 
+            src="{{ product.featured_image | img_url: '400x400' }}" 
+            alt="{{ product.featured_image.alt | escape }}"
+            class="product-card__image"
+            loading="lazy"
+            width="400"
+            height="400"
+          />
+        {% else %}
+          {{ 'product-1' | placeholder_svg_tag: 'product-card__image' }}
+        {% endif %}
+      </a>
+                 
+      <div class="product-card__info">
+        <h3 class="product-card__title">
+          <a href="{{ product.url }}">{{ product.title }}</a>
+        </h3>
+        <p class="product-card__price">{{ product.price | money }}</p>
+        <button 
+           class="product-card__quick-add"
+          data-quick-add
+          data-variant-id="{{ product.selected_or_first_available_variant.id }}"
+        >
+          Quick Add
+        </button>
+      </div>
     </div>
+  {% endfor %}
+</div>
   </div>
 </div>
 
