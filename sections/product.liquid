@@ -219,24 +219,24 @@
 <div class="product">
   <div class="product__grid">
     <div class="product__gallery">
-      <img
-        src="{{ product.featured_image | img_url: '800x' }}"
-        alt="{{ product.featured_image.alt | escape }}"
-        class="product__main-image"
-        id="ProductMainImage"
-        loading="lazy"
-      >
+      {% render 'image',
+        image: product.featured_image,
+        class: 'product__main-image',
+        size: '800x',
+        id: 'ProductMainImage',
+        srcset: true,
+        sizes: '(min-width: 768px) 50vw, 100vw'
+      %}
       
       {% if product.images.size > 1 %}
         <div class="product__thumbnails">
           {% for image in product.images %}
-            <img
-              src="{{ image | img_url: '200x' }}"
-              alt="{{ image.alt | escape }}"
-              class="product__thumbnail{% if forloop.first %} active{% endif %}"
-              data-thumbnail
-              loading="lazy"
-            >
+            {% render 'image',
+              image: image,
+              class: 'product__thumbnail' | append: forloop.first | append: ' active',
+              size: '200x',
+              data_thumbnail: true
+            %}
           {% endfor %}
         </div>
       {% endif %}

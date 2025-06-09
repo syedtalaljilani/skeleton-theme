@@ -45,7 +45,28 @@
     href="{{ url }}"
   {% endif %}
 >
-  {{ image | image_url: width: width, height: height, crop: crop | image_tag }}
+  {%- if image != blank -%}
+    <img
+      src="{{ image | img_url: size | default: '800x' }}"
+      alt="{{ image.alt | escape }}"
+      class="{{ class }}"
+      loading="lazy"
+      width="{{ width | default: image.width }}"
+      height="{{ height | default: image.height }}"
+      {% if srcset %}
+        srcset="
+          {{ image | img_url: '400x' }} 400w,
+          {{ image | img_url: '600x' }} 600w,
+          {{ image | img_url: '800x' }} 800w,
+          {{ image | img_url: '1000x' }} 1000w,
+          {{ image | img_url: '1200x' }} 1200w
+        "
+        sizes="{{ sizes | default: '100vw' }}"
+      {% endif %}
+    >
+  {%- else -%}
+    {{ 'product-1' | placeholder_svg_tag: class }}
+  {%- endif -%}
 </{{ wrapper }}>
 
 {% stylesheet %}
