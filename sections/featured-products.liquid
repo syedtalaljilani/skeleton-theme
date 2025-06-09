@@ -223,7 +223,11 @@
           <span class="limited-badge">Limited</span>
           <a href="{{ product.url }}" class="product-card__image-wrapper">
             {% if product.featured_image %}
-              <p>Img</p>
+            {{ product.featured_image | image_url: width: 800 | image_tag: 
+              class: 'product-card__image',
+              loading: 'lazy',
+              alt: product.featured_image.alt | escape
+            }}
             {% else %}
               {{ 'product-1' | placeholder_svg_tag: 'product-card__image' }}
             {% endif %}
