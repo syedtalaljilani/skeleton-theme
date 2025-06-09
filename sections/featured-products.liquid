@@ -1,56 +1,77 @@
 {%- style -%}
   .featured-products {
-    padding: 6rem 2rem;
+    padding: 8rem 2rem;
     max-width: 1600px;
     margin: 0 auto;
-    background: #000;
+    background: linear-gradient(to bottom, #000, #111);
     color: #fff;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .featured-products::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(to right, transparent, #fff, transparent);
   }
 
   .featured-products__header {
     text-align: center;
-    margin-bottom: 4rem;
+    margin-bottom: 5rem;
+    position: relative;
   }
 
   .featured-products__title {
-    font-size: clamp(2rem, 5vw, 3.5rem);
-    font-weight: 700;
-    margin-bottom: 1rem;
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    font-weight: 800;
+    margin-bottom: 1.5rem;
     text-transform: uppercase;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.15em;
+    background: linear-gradient(to right, #fff, #ccc);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 2px 10px rgba(255,255,255,0.1);
   }
 
   .featured-products__subtitle {
-    font-size: 1.25rem;
+    font-size: 1.5rem;
     color: #ccc;
-    max-width: 600px;
+    max-width: 700px;
     margin: 0 auto;
     line-height: 1.6;
+    font-weight: 300;
   }
 
   .featured-products__grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 3rem;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 4rem;
+    position: relative;
   }
 
   .product-card {
     position: relative;
     overflow: hidden;
     background: #111;
-    border-radius: 8px;
-    transition: transform 0.3s ease;
+    border-radius: 12px;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
   }
 
   .product-card:hover {
-    transform: translateY(-10px);
+    transform: translateY(-15px);
+    box-shadow: 0 8px 30px rgba(255,255,255,0.1);
   }
 
   .product-card__image-wrapper {
     position: relative;
     padding-bottom: 125%;
     overflow: hidden;
-    border-radius: 8px 8px 0 0;
+    border-radius: 12px 12px 0 0;
   }
 
   .product-card__image {
@@ -60,22 +81,23 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.5s ease;
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   .product-card:hover .product-card__image {
-    transform: scale(1.1);
+    transform: scale(1.15);
   }
 
   .product-card__info {
-    padding: 1.5rem;
+    padding: 2rem;
     position: relative;
+    background: linear-gradient(to bottom, #111, #000);
   }
 
   .product-card__title {
-    font-weight: 500;
-    font-size: 1.25rem;
-    margin-bottom: 0.5rem;
+    font-weight: 600;
+    font-size: 1.5rem;
+    margin-bottom: 0.75rem;
     color: #fff;
   }
 
@@ -90,70 +112,110 @@
   }
 
   .product-card__price {
-    color: #ccc;
-    font-size: 1.125rem;
+    color: #fff;
+    font-size: 1.25rem;
+    font-weight: 500;
+    margin-bottom: 1rem;
   }
 
   .product-card__quick-add {
     position: absolute;
-    bottom: 1.5rem;
-    right: 1.5rem;
+    bottom: 2rem;
+    right: 2rem;
     background: #fff;
     color: #000;
-    padding: 0.75rem 1.5rem;
+    padding: 1rem 2rem;
     border: none;
     font-weight: 600;
     cursor: pointer;
     opacity: 0;
-    transition: all 0.3s ease;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     border-radius: 50px;
     text-transform: uppercase;
     font-size: 0.875rem;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.1em;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
   }
 
   .product-card:hover .product-card__quick-add {
     opacity: 1;
+    transform: translateY(-5px);
   }
 
   .product-card__quick-add:hover {
     background: #000;
     color: #fff;
-    border: 1px solid #fff;
+    border: 2px solid #fff;
+    transform: translateY(-8px);
   }
 
   .new-badge {
     position: absolute;
-    top: 1rem;
-    left: 1rem;
+    top: 1.5rem;
+    left: 1.5rem;
     background: #fff;
     color: #000;
-    padding: 0.5rem 1rem;
+    padding: 0.75rem 1.5rem;
     font-size: 0.875rem;
-    font-weight: 600;
+    font-weight: 700;
     border-radius: 50px;
     z-index: 2;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.1em;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.05);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+
+  .limited-badge {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    background: #ff3b3b;
+    color: #fff;
+    padding: 0.75rem 1.5rem;
+    font-size: 0.875rem;
+    font-weight: 700;
+    border-radius: 50px;
+    z-index: 2;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    box-shadow: 0 4px 15px rgba(255,59,59,0.3);
   }
 
   @media (max-width: 768px) {
     .featured-products {
-      padding: 4rem 1rem;
+      padding: 6rem 1rem;
     }
 
     .featured-products__title {
-      font-size: 2rem;
+      font-size: 2.5rem;
     }
 
     .featured-products__subtitle {
-      font-size: 1rem;
+      font-size: 1.25rem;
     }
 
     .product-card__quick-add {
       opacity: 1;
-      bottom: 1rem;
-      right: 1rem;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      padding: 0.75rem 1.5rem;
+      font-size: 0.75rem;
+    }
+
+    .new-badge, .limited-badge {
       padding: 0.5rem 1rem;
       font-size: 0.75rem;
     }
@@ -163,13 +225,16 @@
 <div class="featured-products">
   <div class="featured-products__header">
     <h2 class="featured-products__title">New Arrivals</h2>
-    <p class="featured-products__subtitle">Discover our latest collection of premium oversized t-shirts</p>
+    <p class="featured-products__subtitle">Experience luxury in every thread. Limited edition oversized t-shirts crafted for those who appreciate exceptional quality.</p>
   </div>
 
   <div class="featured-products__grid">
     {% for product in collections[section.settings.collection].products limit: section.settings.products_to_show %}
       <div class="product-card">
         <span class="new-badge">New</span>
+        {% if forloop.index <= 2 %}
+          <span class="limited-badge">Limited</span>
+        {% endif %}
         <a href="{{ product.url }}" class="product-card__image-wrapper">
           <img 
             src="{{ product.featured_image | img_url: '800x' }}" 
