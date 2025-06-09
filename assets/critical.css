@@ -5,13 +5,6 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  border: 0;
-  font-size: 100%;
-  font: inherit;
-  vertical-align: baseline;
-  font-family: inherit;
-  font-weight: inherit;
-  font-style: inherit;
 }
 
 
@@ -168,13 +161,7 @@ body {
 }
 
 /* Layout */
-.main-content {
-  flex: 1;
-  width: 100%;
-  margin: 0;
-  padding: 0;
-  overflow-x: hidden;
-}
+
 
 .container {
   width: 100%;
