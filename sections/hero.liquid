@@ -99,54 +99,40 @@ html, body {
 }
 
 .hero-heading {
-  font-size: clamp(3rem, 10vw, 8rem);
-  font-weight: 900;
-  margin: 0;
-  line-height: 1.1;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.english-text {
-  font-family: var(--font-english);
-  letter-spacing: 0.2em;
-  font-size: clamp(2rem, 8vw, 6rem);
+  gap: 1rem;
+  margin-bottom: 2rem;
 }
 
 .urdu-text {
-  font-family: var(--font-urdu);
-  font-size: clamp(2.5rem, 9vw, 7rem);
-  margin-top: 0.5rem;
+  font-family: var(--font-primary);
+  font-size: 3.5rem;
   line-height: 1.2;
+  display: block;
 }
 
 .hero-subheading {
-  font-size: clamp(1rem, 3vw, 1.5rem);
-  margin: clamp(1rem, 3vw, 2rem) 0;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  max-width: 600px;
-  margin-left: auto;
-  margin-right: auto;
+  font-family: var(--font-primary);
+  font-size: 1.5rem;
+  margin-bottom: 2rem;
+  opacity: 0.8;
 }
 
 .cta-button {
+  font-family: var(--font-secondary);
   display: inline-block;
-  padding: clamp(0.75rem, 2vw, 1rem) clamp(2rem, 4vw, 3rem);
-  border: 2px solid #ffffff;
-  color: #ffffff;
+  padding: 1rem 2rem;
+  background: #000;
+  color: #fff;
   text-decoration: none;
-  font-size: clamp(0.875rem, 2vw, 1.2rem);
-  letter-spacing: 0.1em;
+  border-radius: 4px;
   transition: all 0.3s ease;
-  margin-top: clamp(1rem, 3vw, 2rem);
 }
 
 .cta-button:hover {
-  background: #ffffff;
-  color: #000000;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 /* Tablet */
