@@ -342,20 +342,44 @@
       this.items = this.form.querySelectorAll('[data-cart-item]');
       this.subtotal = this.form.querySelector('[data-cart-subtotal]');
       
-      this.init();
+      // Only initialize if we're on the cart page
+      // This check prevents duplicate event handlers
+      if (window.location.pathname.includes('/cart')) {
+        this.init();
+      }
     }
 
     init() {
       this.items.forEach(item => {
+        // Remove existing event listeners that might be added by base.js
         const minusButton = item.querySelector('[data-quantity-minus]');
         const plusButton = item.querySelector('[data-quantity-plus]');
         const input = item.querySelector('[data-quantity-input]');
         const removeButton = item.querySelector('[data-remove-item]');
-
-        minusButton?.addEventListener('click', () => this.updateQuantity(item, -1));
-        plusButton?.addEventListener('click', () => this.updateQuantity(item, 1));
-        input?.addEventListener('change', () => this.updateCart());
-        removeButton?.addEventListener('click', (e) => this.removeItem(e, item));
+        
+        // Use cart-specific data attributes to avoid conflicts with base.js
+        minusButton?.setAttribute('data-cart-minus', '');
+        plusButton?.setAttribute('data-cart-plus', '');
+        
+        minusButton?.addEventListener('click', (e) => {
+          e.stopPropagation(); // Prevent event bubbling
+          this.updateQuantity(item, -1);
+        });
+        
+        plusButton?.addEventListener('click', (e) => {
+          e.stopPropagation(); // Prevent event bubbling
+          this.updateQuantity(item, 1);
+        });
+        
+        input?.addEventListener('change', (e) => {
+          e.stopPropagation(); // Prevent event bubbling
+          this.updateCart();
+        });
+        
+        removeButton?.addEventListener('click', (e) => {
+          e.stopPropagation(); // Prevent event bubbling
+          this.removeItem(e, item);
+        });
       });
     }
 
@@ -451,7 +475,10 @@
     }
   }
 
-  new Cart();
+  // Only initialize the Cart class on the dedicated cart page
+  if (window.location.pathname.includes('/cart')) {
+    new Cart();
+  }
 </script>
 
 {% schema %}

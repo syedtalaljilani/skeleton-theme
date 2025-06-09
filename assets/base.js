@@ -144,10 +144,18 @@ if (cartDrawer && cartOverlay && cartClose) {
   });
 }
 
-// Cart item quantity
+// Cart item quantity - Only handle cart drawer items, not main cart page
 const quantityInputs = document.querySelectorAll("[data-quantity-input]");
 
 quantityInputs.forEach((input) => {
+  // Skip if we're on the cart page or if this is in cart form
+  if (
+    window.location.pathname.includes("/cart") ||
+    input.closest("[data-cart-form]")
+  ) {
+    return;
+  }
+
   const minus = input.parentElement.querySelector("[data-quantity-minus]");
   const plus = input.parentElement.querySelector("[data-quantity-plus]");
 
