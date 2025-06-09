@@ -44,8 +44,9 @@
   <div class="hero-overlay">
     <div class="hero-text-modern">
       <h1 class="hero-heading-modern">
-        <span>{{ section.settings.heading }}</span>
+        <span>Introducing</span>
         <span class="collection-name">Alfaz</span>
+        <span class="by-text">by</span>
         <img src="{{ 'faselelogo.png' | asset_url }}" alt="Fasele" class="hero-logo-modern" width="400" height="100">
       </h1>
 
@@ -132,13 +133,20 @@
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   text-shadow: 0 2px 10px rgba(255,255,255,0.1);
+  margin-bottom: 0.5rem;
+}
+
+.by-text {
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  font-weight: 400;
+  color: #fff;
+  margin-bottom: 1rem;
 }
 
 .hero-logo-modern {
-  max-width: 250px;
+  max-width: 200px;
   height: auto;
   filter: drop-shadow(0 2px 8px rgba(255,255,255,0.2));
-  margin-top: 1rem;
 }
 
 .hero-subheading-modern {
