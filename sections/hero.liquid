@@ -6,19 +6,19 @@
       "type": "text",
       "id": "heading",
       "label": "Heading",
-      "default": "Welcome to"
+      "default": "Introducing"
     },
     {
       "type": "text",
       "id": "subheading",
       "label": "Subheading",
-      "default": "Discover our collection of premium oversized t-shirts"
+      "default": "Discover our new collection of premium oversized t-shirts"
     },
     {
       "type": "text",
       "id": "cta_text",
       "label": "Button Text",
-      "default": "Shop Now"
+      "default": "Shop Alfaz Collection"
     },
     {
       "type": "image_picker",
@@ -45,13 +45,14 @@
     <div class="hero-text-modern">
       <h1 class="hero-heading-modern">
         <span>{{ section.settings.heading }}</span>
+        <span class="collection-name">Alfaz</span>
         <img src="{{ 'faselelogo.png' | asset_url }}" alt="Fasele" class="hero-logo-modern" width="400" height="100">
       </h1>
 
       <p class="hero-subheading-modern">{{ section.settings.subheading }}</p>
 
       <div class="hero-cta-modern">
-        <a href="/collections/all" class="cta-button-modern">
+        <a href="/collections/alfaz" class="cta-button-modern">
           {{ section.settings.cta_text }}
         </a>
       </div>
@@ -69,18 +70,6 @@
   align-items: center;
   justify-content: center;
   background-color: black;
-}
-
-@keyframes gradient {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
 }
 
 .hero-image-modern {
@@ -132,8 +121,16 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1rem;
-  color: #fff;
+  gap: 0.5rem;
+}
+
+.collection-name {
+  font-size: clamp(3rem, 8vw, 7rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  background: linear-gradient(to right, #fff, #ccc);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
   text-shadow: 0 2px 10px rgba(255,255,255,0.1);
 }
 
@@ -141,6 +138,7 @@
   max-width: 250px;
   height: auto;
   filter: drop-shadow(0 2px 8px rgba(255,255,255,0.2));
+  margin-top: 1rem;
 }
 
 .hero-subheading-modern {
@@ -166,15 +164,20 @@
   text-decoration: none;
   border-radius: 50px;
   transition: all 0.3s ease;
+  border: 2px solid transparent;
 }
 
 .cta-button-modern:hover {
   background: white;
   color: black;
-  border: 1px solid black;
+  border: 2px solid white;
   transform: translateY(-2px);
-  box-shadow: 0 15px 30px rgba(0,0,0,0.4);
-  border: 1px solid rgba(255,255,255,0.3);
+}
+
+.cta-button-modern:hover:active {
+  background: black;
+  color: white;
+  border: 2px solid white;
 }
 
 @media (max-width: 768px) {
