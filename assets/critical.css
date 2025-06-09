@@ -117,7 +117,7 @@ body {
 :root {
   --font-primary: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
     Oxygen, Ubuntu, Cantarell, sans-serif;
-  --font-secondary: "Noto Nastaliq Urdu", serif;
+  --font-secondary: "hidyatullah", serif;
   --color-text: #000000;
   --color-background: #ffffff;
   --color-accent: #000000;
@@ -126,6 +126,14 @@ body {
   --header-height: 80px;
   --container-padding: clamp(1rem, 5vw, 2rem);
   --container-width: min(1440px, 100% - var(--container-padding) * 2);
+}
+
+@font-face {
+  font-family: "hidyatullah";
+  src: url("hidyatullah.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
 }
 
 /* Reset */
