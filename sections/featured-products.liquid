@@ -1,7 +1,7 @@
 {%- style -%}
 .featured-products {
   padding: 8rem 2rem;
-  max-width: 1600px;
+  max-width: 1200px;
   margin: 0 auto;
   background: linear-gradient(to bottom, #000, #111);
   color: #fff;
@@ -48,7 +48,9 @@
 
 .featured-products__grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  grid-template-columns: 1fr;
+  max-width: 800px;
+  margin: 0 auto;
   gap: 4rem;
   position: relative;
 }
@@ -72,6 +74,20 @@
   padding-bottom: 125%;
   overflow: hidden;
   border-radius: 12px 12px 0 0;
+}
+
+.product-card__image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.8s ease;
+}
+
+.product-card:hover .product-card__image {
+  transform: scale(1.1);
 }
 
 .product-card__info {
@@ -135,35 +151,6 @@
   transform: translateY(-8px);
 }
 
-.new-badge {
-  position: absolute;
-  top: 1.5rem;
-  left: 1.5rem;
-  background: #fff;
-  color: #000;
-  padding: 0.75rem 1.5rem;
-  font-size: 0.875rem;
-  font-weight: 700;
-  border-radius: 50px;
-  z-index: 2;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-  animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-  0% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.05);
-  }
-  100% {
-    transform: scale(1);
-  }
-}
-
 .limited-badge {
   position: absolute;
   top: 1.5rem;
@@ -178,6 +165,19 @@
   text-transform: uppercase;
   letter-spacing: 0.1em;
   box-shadow: 0 4px 15px rgba(255,59,59,0.3);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 
 @media (max-width: 768px) {
@@ -201,7 +201,7 @@
     font-size: 0.75rem;
   }
 
-  .new-badge, .limited-badge {
+  .limited-badge {
     padding: 0.5rem 1rem;
     font-size: 0.75rem;
   }
@@ -210,110 +210,97 @@
 
 <div class="featured-products">
   <div class="featured-products__header">
-    <h2 class="featured-products__title">New Arrivals</h2>
+    <h2 class="featured-products__title">Limited Edition</h2>
     <p class="featured-products__subtitle">
       Experience luxury in every thread. Limited edition oversized t-shirts crafted for those who appreciate exceptional quality.
     </p>
   </div>
 
   <div class="featured-products__grid">
-    {% for product in collections[section.settings.collection].products limit: section.settings.products_to_show %}
+    {% for product in collections[section.settings.collection].products limit: 1 %}
       <div class="product-card">
-        <span class="new-badge">New</span>
-        {% if forloop.index <= 2 %}
-          <span class="limited-badge">Limited</span>
-        {% endif %}
+        <span class="limited-badge">Limited</span>
         <a href="{{ product.url }}" class="product-card__image-wrapper">
           {{ product.featured_image | image_url: width: 800 | image_tag:
             loading: 'lazy',
             class: 'product-card__image',
             widths: '400,600,800,1000,1200',
-            sizes: '(max-width: 768px) 100vw, 33vw'
+            sizes: '(max-width: 768px) 100vw, 800px'
           }}
         </a>
-
+        
         <div class="product-card__info">
           <h3 class="product-card__title">
             <a href="{{ product.url }}">{{ product.title }}</a>
           </h3>
           <p class="product-card__price">{{ product.price | money }}</p>
+          <button 
+            class="product-card__quick-add"
+            data-quick-add
+            data-variant-id="{{ product.selected_or_first_available_variant.id }}"
+          >
+            Quick Add
+          </button>
         </div>
-
-        <button
-          class="product-card__quick-add"
-          data-quick-add
-          data-variant-id="{{ product.selected_or_first_available_variant.id }}"
-        >
-          Quick Add
-        </button>
       </div>
     {% endfor %}
   </div>
 </div>
 
 <script>
-class QuickAdd {
-  constructor() {
-    this.buttons = document.querySelectorAll('[data-quick-add]');
-    this.init();
-  }
+  class QuickAdd {
+    constructor() {
+      this.buttons = document.querySelectorAll('[data-quick-add]');
+      this.init();
+    }
 
-  init() {
-    this.buttons.forEach(button => {
-      button.addEventListener('click', this.handleClick.bind(this));
-    });
-  }
-
-  async handleClick(event) {
-    const button = event.target;
-    const variantId = button.dataset.variantId;
-
-    try {
-      const response = await fetch('/cart/add.js', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          id: variantId,
-          quantity: 1
-        })
+    init() {
+      this.buttons.forEach(button => {
+        button.addEventListener('click', this.handleClick.bind(this));
       });
+    }
 
-      if (response.ok) {
-        window.location.reload();
+    async handleClick(event) {
+      const button = event.target;
+      const variantId = button.dataset.variantId;
+
+      try {
+        const response = await fetch('/cart/add.js', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            id: variantId,
+            quantity: 1
+          })
+        });
+
+        if (response.ok) {
+          window.location.reload();
+        }
+      } catch (error) {
+        console.error('Error adding to cart:', error);
       }
-    } catch (error) {
-      console.error('Error adding to cart:', error);
     }
   }
-}
 
-new QuickAdd();
+  new QuickAdd();
 </script>
 
 {% schema %}
 {
-  "name": "New Arrivals",
+  "name": "Limited Edition",
   "settings": [
     {
       "type": "collection",
       "id": "collection",
       "label": "Collection"
-    },
-    {
-      "type": "range",
-      "id": "products_to_show",
-      "min": 4,
-      "max": 12,
-      "step": 2,
-      "default": 1,
-      "label": "Number of products to show"
     }
   ],
   "presets": [
     {
-      "name": "New Arrivals",
+      "name": "Limited Edition",
       "category": "Product"
     }
   ]
