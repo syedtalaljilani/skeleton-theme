@@ -30,29 +30,12 @@ const handleScroll = throttle(() => {
   const currentScroll = window.pageYOffset;
 
   if (currentScroll <= 0) {
-    header.classList.remove("header--hidden");
     header.classList.remove("header--scrolled");
     return;
   }
 
   // Add scrolled class when page is scrolled
   header.classList.add("header--scrolled");
-
-  if (
-    currentScroll > lastScroll &&
-    !header.classList.contains("header--hidden")
-  ) {
-    // Scrolling down
-    header.classList.add("header--hidden");
-  } else if (
-    currentScroll < lastScroll &&
-    header.classList.contains("header--hidden")
-  ) {
-    // Scrolling up
-    header.classList.remove("header--hidden");
-  }
-
-  lastScroll = currentScroll;
 }, 100);
 
 window.addEventListener("scroll", handleScroll);
