@@ -28,8 +28,8 @@
   .product__main-image-wrapper {
     position: relative;
     width: 100%;
-    margin-bottom: 1rem;
-    border-radius: 8px;
+    margin-bottom: 2rem;
+    border-radius: 12px;
     overflow: hidden;
     background: #f8f8f8;
   }
@@ -39,40 +39,11 @@
     aspect-ratio: 1;
     object-fit: cover;
     display: block;
-    transition: transform 0.3s ease;
+    transition: transform 0.5s ease;
   }
 
   .product__main-image:hover {
     transform: scale(1.05);
-  }
-
-  .product__thumbnails {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
-    gap: 1rem;
-  }
-
-  .product__thumbnail-wrapper {
-    position: relative;
-    width: 100%;
-    aspect-ratio: 1;
-    border-radius: 4px;
-    overflow: hidden;
-    cursor: pointer;
-    background: #f8f8f8;
-  }
-
-  .product__thumbnail {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    opacity: 0.6;
-    transition: all 0.3s ease;
-  }
-
-  .product__thumbnail:hover,
-  .product__thumbnail.active {
-    opacity: 1;
   }
 
   .product__gallery-nav {
@@ -88,22 +59,24 @@
   }
 
   .product__gallery-button {
-    width: 40px;
-    height: 40px;
+    width: 48px;
+    height: 48px;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: rgba(255, 255, 255, 0.9);
+    background: rgba(255, 255, 255, 0.95);
     border: none;
     border-radius: 50%;
     cursor: pointer;
     pointer-events: auto;
-    transition: all 0.2s ease;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   }
 
   .product__gallery-button:hover {
     background: #fff;
     transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   }
 
   .product__gallery-button:disabled {
@@ -113,57 +86,8 @@
   }
 
   .product__gallery-button svg {
-    width: 20px;
-    height: 20px;
-  }
-
-  .product__zoom {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.9);
-    z-index: 1000;
-    display: none;
-    align-items: center;
-    justify-content: center;
-    padding: 2rem;
-  }
-
-  .product__zoom.active {
-    display: flex;
-  }
-
-  .product__zoom-image {
-    max-width: 90%;
-    max-height: 90vh;
-    object-fit: contain;
-  }
-
-  .product__zoom-close {
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
-    width: 40px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: #fff;
-    border: none;
-    border-radius: 50%;
-    cursor: pointer;
-    transition: all 0.2s ease;
-  }
-
-  .product__zoom-close:hover {
-    transform: scale(1.1);
-  }
-
-  .product__zoom-close svg {
-    width: 20px;
-    height: 20px;
+    width: 24px;
+    height: 24px;
   }
 
   .product__info {
@@ -174,19 +98,21 @@
     font-size: 2.5rem;
     font-weight: 700;
     margin-bottom: 1rem;
+    line-height: 1.2;
   }
 
   .product__price {
-    font-size: 1.5rem;
+    font-size: 1.75rem;
     font-weight: 500;
     margin-bottom: 2rem;
+    color: #000;
   }
 
   .product__description {
     font-size: 1.125rem;
     line-height: 1.6;
     color: #666;
-    margin-bottom: 2rem;
+    margin-bottom: 2.5rem;
   }
 
   .product__form {
@@ -194,50 +120,62 @@
   }
 
   .product__options {
-    margin-bottom: 1.5rem;
+    margin-bottom: 2rem;
   }
 
   .product__option {
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
   }
 
   .product__option-label {
     display: block;
     font-weight: 500;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.75rem;
+    font-size: 1rem;
   }
 
   .product__option-select {
     width: 100%;
-    padding: 0.75rem;
+    padding: 1rem;
     border: 1px solid #ddd;
-    border-radius: 4px;
+    border-radius: 8px;
     font-size: 1rem;
     background: #fff;
+    transition: all 0.2s ease;
+  }
+
+  .product__option-select:hover {
+    border-color: #999;
+  }
+
+  .product__option-select:focus {
+    outline: none;
+    border-color: #000;
   }
 
   .product__quantity {
     display: flex;
     align-items: center;
-    gap: 1rem;
-    margin-bottom: 1.5rem;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
   }
 
   .product__quantity-label {
     font-weight: 500;
+    font-size: 1rem;
   }
 
   .quantity-adjuster {
     display: flex;
     align-items: center;
     border: 1px solid #ddd;
-    border-radius: 4px;
+    border-radius: 8px;
     overflow: hidden;
   }
 
   .quantity-button {
-    width: 40px;
-    height: 40px;
+    width: 48px;
+    height: 48px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -259,7 +197,7 @@
 
   .product__quantity-input {
     width: 60px;
-    height: 40px;
+    height: 48px;
     padding: 0;
     border: none;
     border-left: 1px solid #ddd;
@@ -281,26 +219,78 @@
     background: #000;
     color: #fff;
     border: none;
-    border-radius: 4px;
+    border-radius: 8px;
     font-size: 1.125rem;
     font-weight: 500;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: all 0.3s ease;
   }
 
   .product__submit:hover {
     background: #333;
-    transform: translateY(-1px);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   }
 
   .product__submit:disabled {
     opacity: 0.5;
     cursor: not-allowed;
     transform: none;
+    box-shadow: none;
   }
 
   .product__payment-button {
     margin-top: 1rem;
+  }
+
+  .product__zoom {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.95);
+    z-index: 1000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+  }
+
+  .product__zoom.active {
+    display: flex;
+  }
+
+  .product__zoom-image {
+    max-width: 90%;
+    max-height: 90vh;
+    object-fit: contain;
+  }
+
+  .product__zoom-close {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #fff;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .product__zoom-close:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  .product__zoom-close svg {
+    width: 24px;
+    height: 24px;
   }
 
   @media (max-width: 768px) {
@@ -323,7 +313,17 @@
     }
 
     .product__price {
-      font-size: 1.25rem;
+      font-size: 1.5rem;
+    }
+
+    .product__gallery-button {
+      width: 40px;
+      height: 40px;
+    }
+
+    .product__gallery-button svg {
+      width: 20px;
+      height: 20px;
     }
   }
 {%- endstyle -%}
@@ -451,7 +451,6 @@
       if (!this.form) return;
 
       this.mainImage = document.getElementById('ProductMainImage');
-      this.thumbnails = document.querySelectorAll('[data-thumbnail]');
       this.variantId = this.form.querySelector('[data-variant-id]');
       this.price = document.querySelector('[data-price]');
       this.optionSelects = this.form.querySelectorAll('[data-option-select]');
@@ -467,17 +466,12 @@
       this.zoomClose = document.querySelector('[data-zoom-close]');
       
       this.currentImageIndex = 0;
-      this.images = Array.from(this.thumbnails);
+      this.images = Array.from(document.querySelectorAll('[data-thumbnail]'));
       
       this.init();
     }
 
     init() {
-      // Initialize thumbnails
-      this.thumbnails.forEach((thumbnail, index) => {
-        thumbnail.addEventListener('click', () => this.updateMainImage(index));
-      });
-
       // Initialize gallery navigation
       this.galleryPrev?.addEventListener('click', () => this.navigateGallery(-1));
       this.galleryNext?.addEventListener('click', () => this.navigateGallery(1));
@@ -500,24 +494,18 @@
       document.addEventListener('keydown', (e) => this.handleKeyboard(e));
     }
 
-    updateMainImage(index) {
-      if (index < 0 || index >= this.images.length) return;
+    navigateGallery(direction) {
+      const newIndex = this.currentImageIndex + direction;
+      if (newIndex < 0 || newIndex >= this.images.length) return;
       
-      this.currentImageIndex = index;
-      const image = this.images[index];
+      this.currentImageIndex = newIndex;
+      const image = this.images[newIndex];
       
       if (this.mainImage) {
         this.mainImage.src = image.src.replace('200x', '800x');
-        this.thumbnails.forEach(t => t.classList.remove('active'));
-        image.classList.add('active');
       }
 
       this.updateGalleryNav();
-    }
-
-    navigateGallery(direction) {
-      const newIndex = this.currentImageIndex + direction;
-      this.updateMainImage(newIndex);
     }
 
     updateGalleryNav() {
