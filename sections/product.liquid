@@ -222,7 +222,8 @@
       {% render 'image',
         image: product.featured_image,
         class: 'product__main-image',
-        size: '800x',
+        width: 800,
+        height: 800,
         id: 'ProductMainImage',
         srcset: true,
         sizes: '(min-width: 768px) 50vw, 100vw'
@@ -234,7 +235,8 @@
             {% render 'image',
               image: image,
               class: 'product__thumbnail' | append: forloop.first | append: ' active',
-              size: '200x',
+              width: 200,
+              height: 200,
               data_thumbnail: true
             %}
           {% endfor %}

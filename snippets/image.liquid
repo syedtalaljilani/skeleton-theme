@@ -47,22 +47,24 @@
 >
   {%- if image != blank -%}
     <img
-      src="{{ image | img_url: size | default: '800x' }}"
+      src="{{ image | image_url: width: 800 }}"
       alt="{{ image.alt | escape }}"
       class="{{ class }}"
       loading="lazy"
-      width="{{ width | default: image.width }}"
-      height="{{ height | default: image.height }}"
+      width="{{ width | default: 800 }}"
+      height="{{ height | default: 800 }}"
       {% if srcset %}
         srcset="
-          {{ image | img_url: '400x' }} 400w,
-          {{ image | img_url: '600x' }} 600w,
-          {{ image | img_url: '800x' }} 800w,
-          {{ image | img_url: '1000x' }} 1000w,
-          {{ image | img_url: '1200x' }} 1200w
+          {{ image | image_url: width: 400 }} 400w,
+          {{ image | image_url: width: 600 }} 600w,
+          {{ image | image_url: width: 800 }} 800w,
+          {{ image | image_url: width: 1000 }} 1000w,
+          {{ image | image_url: width: 1200 }} 1200w
         "
         sizes="{{ sizes | default: '100vw' }}"
       {% endif %}
+      {% if id %}id="{{ id }}"{% endif %}
+      {% if data_thumbnail %}data-thumbnail{% endif %}
     >
   {%- else -%}
     {{ 'product-1' | placeholder_svg_tag: class }}
