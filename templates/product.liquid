@@ -1,69 +1,109 @@
 <div class="product-page-modern">
   <div class="container-modern">
     <div class="product-grid-modern">
+      <!-- Product Gallery with main image and thumbnails -->
       <div class="product-gallery-modern">
-        {% for image in product.images offset:1 %}
-          <div class="product-image-modern">
-            <img src="{{ image | image_url: width: 800 }}" alt="{{ image.alt | escape }}" width="{{ image.width }}" height="{{ image.height }}">
-          </div>
-        {% endfor %}
+        <div class="main-image-container">
+          <img id="main-product-image" src="{{ product.featured_image | image_url: width: 1000 }}" alt="{{ product.featured_image.alt | escape }}" class="main-product-image" width="1000" height="1000">
+        </div>
+        
+        <div class="product-thumbnails">
+          {% for image in product.images %}
+            <div class="thumbnail-item{% if forloop.first %} active{% endif %}" data-image-id="{{ image.id }}">
+              <img src="{{ image | image_url: width: 150 }}" 
+                                 alt="{{ image.alt | escape }}" 
+                                 data-full-img="{{ image | image_url: width: 1000 }}"
+                                 class="thumbnail-image"
+                                 width="150"
+                                 height="150"
+                                 onclick="updateMainImage(this)">
+            </div>
+          {% endfor %}
+        </div>
       </div>
       
       <div class="product-info-modern">
         <h1 class="product-title-modern">{{ product.title }}</h1>
-        <div class="product-price-modern">
-          {{ product.price | money }}
+        
+        <div class="product-price-wrapper">
+          <div class="product-price-modern" data-product-price>
+            {{ product.selected_or_first_available_variant.price | money }}
+          </div>
+          
+          {% if product.compare_at_price > product.price %}
+            <div class="compare-at-price">{{ product.compare_at_price | money }}</div>
+            <div class="sale-badge">Sale</div>
+          {% endif %}
         </div>
         
         <div class="product-description-modern">
           {{ product.description }}
         </div>
         
-        <form method="post" action="/cart/add" class="product-form-modern">
-          <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+        <form method="post" action="/cart/add" class="product-form-modern" data-product-form>
+          <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}" data-variant-id>
           
-          {% if product.has_only_default_variant == false %}
+          {% unless product.has_only_default_variant %}
             <div class="product-options-modern">
               {% for option in product.options_with_values %}
                 <div class="option-modern">
-                  <label>{{ option.name }}</label>
-                  <select name="options[{{ option.name }}]">
+                  <label for="option-{{ option.name | handleize }}">{{ option.name }}</label>
+                  <select 
+                    id="option-{{ option.name | handleize }}"
+                    name="options[{{ option.name }}]"
+                    class="variant-select"
+                    data-option-index="{{ forloop.index0 }}"
+                  >
                     {% for value in option.values %}
-                      <option value="{{ value }}">{{ value }}</option>
+                      <option value="{{ value }}" {% if option.selected_value == value %}selected="selected"{% endif %}>{{ value }}</option>
                     {% endfor %}
                   </select>
                 </div>
               {% endfor %}
             </div>
-          {% endif %}
+            
+            <div class="variant-availability">
+              <span data-variant-available>
+                {% if product.selected_or_first_available_variant.available %}
+                  In Stock
+                {% else %}
+                  Out of Stock
+                {% endif %}
+              </span>
+            </div>
+          {% endunless %}
           
           <div class="quantity-modern">
-            <label>Quantity</label>
-            <div style="display: flex; align-items: center; gap: 0.5rem;">
-              <button type="button" class="qty-btn" onclick="var q=document.getElementById('product-qty'); if(q.value>1)q.value--;">-</button>
-              <input id="product-qty" type="number" name="quantity" value="1" min="1" style="width: 60px; text-align: center;">
-              <button type="button" class="qty-btn" onclick="var q=document.getElementById('product-qty'); q.value++;">+</button>
+            <label for="product-qty">Quantity</label>
+            <div class="quantity-selector">
+              <button type="button" class="qty-btn" data-quantity-minus aria-label="Decrease quantity">-</button>
+              <input id="product-qty" type="number" name="quantity" value="1" min="1" data-quantity-input>
+              <button type="button" class="qty-btn" data-quantity-plus aria-label="Increase quantity">+</button>
             </div>
           </div>
-          <style>
-          .qty-btn {
-            background: #222;
-            color: #fff;
-            border: none;
-            border-radius: 6px;
-            width: 32px;
-            height: 32px;
-            font-size: 1.2rem;
-            cursor: pointer;
-            transition: background 0.2s;
-          }
-          .qty-btn:hover {
-            background: #444;
-          }
-          </style>
           
-          <button type="submit" class="add-to-cart-modern">Add to Cart</button>
+          <div class="product-actions">
+            <button type="submit" class="add-to-cart-modern" data-add-to-cart>
+              <span class="btn-text">Add to Cart</span>
+              <span class="btn-loading">
+                <svg class="spinner" viewBox="0 0 50 50">
+                  <circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
+                </svg>
+              </span>
+            </button>
+          </div>
+          
+          <div class="form-feedback" data-form-feedback></div>
         </form>
+        
+        {% if product.tags.size > 0 %}
+          <div class="product-tags">
+            <span>Tags:</span>
+            {% for tag in product.tags %}
+              <a href="/collections/all/{{ tag | handle }}" class="product-tag">{{ tag }}</a>
+            {% endfor %}
+          </div>
+        {% endif %}
       </div>
     </div>
   </div>
@@ -75,12 +115,11 @@
   color: #fff;
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   min-height: 100vh;
-  padding-top: 3rem;
-  padding-bottom: 3rem;
+  padding: 3rem 0;
 }
 
 .container-modern {
-  max-width: 1200px;
+  max-width: 1300px;
   margin: 0 auto;
   padding: 2rem;
 }
@@ -95,8 +134,9 @@
   overflow: hidden;
 }
 
+/* Gallery Styles */
 .product-gallery-modern {
-  flex: 1;
+  flex: 1.2;
   background: #111;
   border-right: 1px solid #222;
   padding: 2rem 1.5rem;
@@ -106,21 +146,63 @@
   min-width: 0;
 }
 
-.product-image-modern img {
+.main-image-container {
   width: 100%;
+  aspect-ratio: 1/1;
   border-radius: 16px;
-  object-fit: cover;
+  overflow: hidden;
+  position: relative;
   background: #222;
-  border: 2px solid #222;
-  filter: brightness(0.92) grayscale(10%);
-  box-shadow: 0 2px 16px rgba(0,0,0,0.18);
-  transition: transform 0.4s cubic-bezier(.4,2,.6,1), filter 0.3s;
-}
-.product-image-modern img:hover {
-  transform: scale(1.03);
-  filter: brightness(1) grayscale(0%);
 }
 
+.main-product-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 16px;
+  border: 2px solid #222;
+  filter: brightness(0.95);
+  transition: transform 0.4s cubic-bezier(.4,1,.6,1), filter 0.3s;
+}
+
+.main-product-image:hover {
+  filter: brightness(1);
+  transform: scale(1.01);
+}
+
+.product-thumbnails {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(70px, 1fr));
+  gap: 10px;
+  width: 100%;
+}
+
+.thumbnail-item {
+  aspect-ratio: 1/1;
+  border-radius: 10px;
+  overflow: hidden;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: all 0.2s ease;
+  opacity: 0.7;
+}
+
+.thumbnail-item.active {
+  border-color: #fff;
+  opacity: 1;
+}
+
+.thumbnail-item:hover {
+  opacity: 1;
+}
+
+.thumbnail-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Product Info Styles */
 .product-info-modern {
   flex: 1;
   background: rgba(0,0,0,0.7);
@@ -144,6 +226,13 @@
   text-shadow: 0 2px 10px rgba(255,255,255,0.1);
 }
 
+.product-price-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 2rem;
+}
+
 .product-price-modern {
   font-size: 2rem;
   font-weight: 700;
@@ -151,9 +240,23 @@
   background: #111;
   border-radius: 8px;
   padding: 0.5rem 1.5rem;
-  margin-bottom: 2rem;
   display: inline-block;
   box-shadow: 0 2px 8px rgba(255,255,255,0.08);
+}
+
+.compare-at-price {
+  font-size: 1.2rem;
+  color: #aaa;
+  text-decoration: line-through;
+}
+
+.sale-badge {
+  background: #ff3838;
+  color: white;
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  font-weight: bold;
 }
 
 .product-description-modern {
@@ -163,6 +266,7 @@
   line-height: 1.6;
 }
 
+/* Form Styles */
 .product-form-modern label {
   color: #fff;
   font-weight: 600;
@@ -174,21 +278,70 @@
   margin-bottom: 1.5rem;
 }
 
+.variant-availability {
+  color: #32CD32;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.variant-availability.unavailable {
+  color: #ff3838;
+}
+
 .option-modern select, .quantity-modern input[type="number"] {
-  background: #fff;
-  color: #111;
-  border: 1px solid #fff;
-  padding: 0.6rem 1rem;
+  background: rgba(255,255,255,0.1);
+  color: #fff;
+  border: 1px solid rgba(255,255,255,0.2);
+  padding: 0.8rem 1rem;
   border-radius: 8px;
   margin-top: 0.5rem;
   font-size: 1rem;
   font-weight: 500;
   outline: none;
   transition: border 0.2s;
+  width: 100%;
+  max-width: 300px;
 }
 
 .option-modern select:focus, .quantity-modern input[type="number"]:focus {
-  border: 1.5px solid #ccc;
+  border: 1px solid rgba(255,255,255,0.5);
+}
+
+.quantity-selector {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  max-width: 150px;
+  margin-top: 0.5rem;
+}
+
+.qty-btn {
+  background: #222;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  width: 36px;
+  height: 36px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: background 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.qty-btn:hover {
+  background: #444;
+}
+
+#product-qty {
+  flex: 1;
+  text-align: center;
+  min-width: 60px;
+}
+
+.product-actions {
+  margin-top: 1rem;
 }
 
 .add-to-cart-modern {
@@ -204,7 +357,9 @@
   cursor: pointer;
   transition: all 0.3s cubic-bezier(.4,2,.6,1);
   box-shadow: 0 2px 8px rgba(255,255,255,0.08);
-  margin-top: 0.5rem;
+  position: relative;
+  overflow: hidden;
+  min-width: 200px;
 }
 
 .add-to-cart-modern:hover {
@@ -220,6 +375,101 @@
   border: 2px solid #fff;
 }
 
+.add-to-cart-modern.loading .btn-text {
+  opacity: 0;
+}
+
+.add-to-cart-modern.loading .btn-loading {
+  opacity: 1;
+}
+
+.btn-loading {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+}
+
+.spinner {
+  animation: rotate 2s linear infinite;
+  width: 24px;
+  height: 24px;
+}
+
+.path {
+  stroke: #ffffff;
+  stroke-linecap: round;
+  animation: dash 1.5s ease-in-out infinite;
+}
+
+@keyframes rotate {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes dash {
+  0% {
+    stroke-dasharray: 1, 150;
+    stroke-dashoffset: 0;
+  }
+  50% {
+    stroke-dasharray: 90, 150;
+    stroke-dashoffset: -35;
+  }
+  100% {
+    stroke-dasharray: 90, 150;
+    stroke-dashoffset: -124;
+  }
+}
+
+.form-feedback {
+  margin-top: 1rem;
+  padding: 1rem;
+  border-radius: 8px;
+  font-weight: 500;
+  display: none;
+}
+
+.form-feedback.success {
+  background: rgba(50, 205, 50, 0.2);
+  color: #32CD32;
+  display: block;
+}
+
+.form-feedback.error {
+  background: rgba(255, 0, 0, 0.2);
+  color: #ff3838;
+  display: block;
+}
+
+.product-tags {
+  margin-top: 2rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.product-tag {
+  background: rgba(255,255,255,0.1);
+  color: #fff;
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  text-decoration: none;
+  transition: background 0.2s;
+}
+
+.product-tag:hover {
+  background: rgba(255,255,255,0.2);
+}
+
 @media (max-width: 900px) {
   .product-grid-modern {
     flex-direction: column;
@@ -229,6 +479,10 @@
   .product-info-modern, .product-gallery-modern {
     padding: 1.5rem 1rem;
     border-radius: 0;
+  }
+  .product-gallery-modern {
+    border-right: 0;
+    border-bottom: 1px solid #222;
   }
 }
 
@@ -246,8 +500,16 @@
     font-size: 1.2rem;
     padding: 0.4rem 1rem;
   }
+  .product-thumbnails {
+    grid-template-columns: repeat(auto-fit, minmax(60px, 1fr));
+    gap: 6px;
+  }
 }
 </style>
+
+<script type="application/json" id="product-json">
+  {{ product | json }}
+</script>
 
 {% schema %}
 {
