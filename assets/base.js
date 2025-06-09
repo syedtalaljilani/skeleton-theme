@@ -31,8 +31,12 @@ const handleScroll = throttle(() => {
 
   if (currentScroll <= 0) {
     header.classList.remove("header--hidden");
+    header.classList.remove("header--scrolled");
     return;
   }
+
+  // Add scrolled class when page is scrolled
+  header.classList.add("header--scrolled");
 
   if (
     currentScroll > lastScroll &&

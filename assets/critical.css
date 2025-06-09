@@ -170,21 +170,25 @@ body {
 
 /* Header */
 .header {
-  position: sticky;
+  position: fixed;
   top: 0;
   left: 0;
-
   width: 100%;
   height: var(--header-height);
-  background-color: var(--color-background);
+  background-color: rgba(255, 255, 255, 0.98);
   z-index: 100;
-  transition: transform var(--transition-duration) ease;
+  transition: all var(--transition-duration) ease;
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.05);
 }
 
 .header--hidden {
   transform: translateY(-100%);
+}
+
+.header--scrolled {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
 /* Navigation */
