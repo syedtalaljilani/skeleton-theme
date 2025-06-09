@@ -1,31 +1,31 @@
-<div class="product-page product-page--margin-top">
+<div class="product-page product-page--margin-top bw-theme">
   <div class="container">
     <div class="product-grid">
       <div class="product-gallery">
         {% for image in product.images offset:1 %}
-          <div class="product-image">
+          <div class="product-image bw-image">
             <img src="{{ image | image_url: width: 800 }}" alt="{{ image.alt | escape }}" width="{{ image.width }}" height="{{ image.height }}">
           </div>
         {% endfor %}
       </div>
       
-      <div class="product-info">
-        <h1 class="product-title">{{ product.title }}</h1>
-        <div class="product-price">
+      <div class="product-info bw-info">
+        <h1 class="product-title bw-title">{{ product.title }}</h1>
+        <div class="product-price bw-price">
           {{ product.price | money }}
         </div>
         
-        <div class="product-description">
+        <div class="product-description bw-description">
           {{ product.description }}
         </div>
         
-        <form method="post" action="/cart/add">
+        <form method="post" action="/cart/add" class="bw-form">
           <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
           
           {% if product.has_only_default_variant == false %}
-            <div class="product-options">
+            <div class="product-options bw-options">
               {% for option in product.options_with_values %}
-                <div class="option">
+                <div class="option bw-option">
                   <label>{{ option.name }}</label>
                   <select name="options[{{ option.name }}]">
                     {% for value in option.values %}
@@ -37,12 +37,12 @@
             </div>
           {% endif %}
           
-          <div class="quantity">
+          <div class="quantity bw-quantity">
             <label>Quantity</label>
             <input type="number" name="quantity" value="1" min="1">
           </div>
           
-          <button type="submit" class="add-to-cart">Add to Cart</button>
+          <button type="submit" class="add-to-cart bw-add-to-cart">Add to Cart</button>
         </form>
       </div>
     </div>
@@ -50,8 +50,101 @@
 </div>
 
 <style>
-.product-page--margin-top {
-  margin-top: 400px; /* Adjust value as needed */
+.bw-theme {
+  background: #fff;
+  color: #111;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+.bw-theme .container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+.product-grid {
+  display: flex;
+  gap: 3rem;
+  align-items: flex-start;
+}
+.product-gallery {
+  flex: 1;
+  background: #fff;
+  border: 1px solid #111;
+  padding: 1rem;
+}
+.bw-image img {
+  width: 100%;
+  filter: grayscale(100%);
+  border: 2px solid #111;
+  background: #fff;
+}
+.bw-info {
+  flex: 1;
+  background: #111;
+  color: #fff;
+  padding: 2rem;
+  border-radius: 8px;
+  border: 1px solid #111;
+}
+.bw-title {
+  font-size: 2.2rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  color: #fff;
+  letter-spacing: 1px;
+}
+.bw-price {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #fff;
+  background: #111;
+  border-bottom: 1px solid #fff;
+  padding-bottom: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+.bw-description {
+  font-size: 1rem;
+  color: #eee;
+  margin-bottom: 2rem;
+}
+.bw-form label {
+  color: #fff;
+  font-weight: 600;
+}
+.bw-options, .bw-quantity {
+  margin-bottom: 1.5rem;
+}
+.bw-option select, .bw-quantity input[type="number"] {
+  background: #fff;
+  color: #111;
+  border: 1px solid #fff;
+  padding: 0.5rem;
+  border-radius: 4px;
+  margin-top: 0.5rem;
+}
+.bw-add-to-cart {
+  background: #fff;
+  color: #111;
+  border: 2px solid #111;
+  padding: 0.75rem 2rem;
+  font-size: 1.1rem;
+  font-weight: bold;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+.bw-add-to-cart:hover {
+  background: #111;
+  color: #fff;
+  border: 2px solid #fff;
+}
+@media (max-width: 900px) {
+  .product-grid {
+    flex-direction: column;
+    gap: 2rem;
+  }
+  .bw-info, .product-gallery {
+    padding: 1rem;
+  }
 }
 </style>
 
